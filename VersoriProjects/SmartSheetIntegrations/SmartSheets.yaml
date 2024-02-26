@@ -1,0 +1,249 @@
+openapi: 3.0.0
+info:
+  title: Smartsheet OAuth 2.0 API
+  version: 1.0.0
+  description: OAuth 2.0 authentication for Smartsheet API
+
+servers:
+  - url: https://api.smartsheet.com
+
+paths:
+  /b/authorize:
+    get:
+      summary: Smartsheet OAuth Authorization Endpoint
+      description: Endpoint for user authorization
+      parameters:
+        - name: response_type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - code
+        - name: client_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Your client ID obtained when you registered your app.
+        - name: redirect_uri
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Redirect URI for Smartsheet to send the user after authorization.
+        - name: scope
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Space-delimited list of access scopes.
+        - name: state
+          in: query
+          schema:
+            type: string
+          description: An arbitrary string of your choosing.
+      responses:
+        '302':
+          description: Redirect to authorization page
+
+  /token:
+    post:
+      summary: Smartsheet OAuth Token Endpoint
+      description: Endpoint for token exchange
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  enum:
+                    - authorization_code
+                code:
+                  type: string
+                redirect_uri:
+                  type: string
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+              required:
+                - grant_type
+                - code
+                - redirect_uri
+                - client_id
+      responses:
+        '200':
+          description: Token response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                  expires_in:
+                    type: integer
+                  refresh_token:
+                    type: string
+                  scope:
+                    type: string
+  /2.0/webhooks:
+    post:
+      summary: Create a Webhook
+      description: Endpoint for creating a webhook in Smartsheet
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookRequest'
+      responses:
+        '200':
+          description: Webhook created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+        '401':
+          description: Unauthorized - Access token is missing or invalid
+
+components:
+  schemas:
+    WebhookRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        callbackUrl:
+          type: string
+        scope:
+          type: string
+        scopeObjectId:
+          type: integer
+        events:
+          type: array
+          items:
+            type: string
+        version:
+          type: integer
+        subscope:
+          type: object
+          properties:
+            columnIds:
+              type: array
+              items:
+                type: string
+      required:
+        - name
+        - callbackUrl
+        - scope
+        - scopeObjectId
+        - events
+        - version
+
+
+    WebhookResponse:
+      type: object
+      properties:
+        version:
+          type: integer
+        failedItems:
+          type: array
+          items:
+            type: object
+            properties:
+              rowId:
+                type: integer
+              error:
+                type: object
+                properties:
+                  refId:
+                    type: string
+                  errorCode:
+                    type: integer
+                  message:
+                    type: string
+              index:
+                type: integer
+        message:
+          type: string
+        resultCode:
+          type: integer
+        result:
+          type: object
+          properties:
+            callbackUrl:
+              type: string
+            enabled:
+              type: boolean
+            events:
+              type: array
+              items:
+                type: string
+            name:
+              type: string
+            version:
+              type: integer
+            id:
+              type: integer
+            apiClientId:
+              type: integer
+            scopeObjectId:
+              type: integer
+            apiClientName:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            disabledDetails:
+              type: string
+            modifiedAt:
+              type: string
+              format: date-time
+            scope:
+              type: string
+            sharedSecret:
+              type: string
+            stats:
+              type: object
+              properties:
+                lastCallbackAttempt:
+                  type: string
+                  format: date-time
+                lastCallbackAttemptRetryCount:
+                  type: integer
+                lastSuccessfulCallback:
+                  type: string
+                  format: date-time
+            status:
+              type: string
+            subscope:
+              type: object
+              properties:
+                columnIds:
+                  type: array
+                  items:
+                    type: string
+
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.smartsheet.com/b/authorize
+          tokenUrl: https://api.smartsheet.com/2.0/token
+          scopes:
+            ADMIN_WEBHOOKS: Create, delete, and update webhooks; get all webhooks; reset shared secret.
+            ADMIN_WORKSPACES: Create and manage workspaces and folders, including sharing.
+            READ_EVENTS: Retrieve events.
+            READ_SHEETS: Read all sheet data, including attachments, discussions, and cell data.
+    bearerAuth:
+      type: http
+      scheme: bearer
+

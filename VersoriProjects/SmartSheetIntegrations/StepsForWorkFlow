@@ -1,0 +1,8 @@
+For Automation 1:
+1: First we'll use webhook endpoint and give it the spreadsheet id when response is success this means webhook is created
+2: Then we have to activate it by hitting the update webhook endpoint
+3: When new event will occur it will send list of event list to call back url(versori)
+4: Then we have to check about the event details 
+5: If its an update event then we have to create a scenario to check if row is added or not
+6: If the row is added then we can simply hit get sheet url(ttps://api.smartsheet.com/2.0/sheets/{sheetId}) and retrive the last row id
+7: Using row id we can fetch the row using get row endpoint

@@ -1,0 +1,531 @@
+openapi: "3.0.3"
+info:
+  version: "1.0.0"
+  title: "Freeway API"
+servers:
+  - url: https://freeway.co.uk
+paths:
+  /freeway/enrichment:
+    post:
+      operationId: FreewayEnrichmentEndpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseBody'
+      callbacks:
+        enrichmentCallback:
+          '{$request.query.queryUrl}':
+            post:
+              operationId: EnrichmentResults
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/RequestBody'
+              responses:
+                '200':
+                  description: OK
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/ResponseBody'
+components:
+  schemas:
+    RequestBody:
+      type: object
+      properties:
+        SearchRef:
+          type: string
+        CustomerInsuredPartyId:
+          type: string
+        PolicyDetailsId:
+          type: string
+        PolicyDetailsHistoryId:
+          type: string
+        PolicyStartDate:
+          type: string
+          format: date-time
+        ClaimId:
+          type: string
+        Title:
+          type: string
+        Forename:
+          type: string
+        Middlename:
+          type: string
+        Surname:
+          type: string
+        MainDriver:
+          type: boolean
+        DOB:
+          type: string
+          format: date-time
+        Type:
+          type: string
+        DLN:
+          type: string
+        Gender:
+          type: string
+        MaritalStatus:
+          type: string
+        Email:
+          type: string
+        SourceOfBusinessId:
+          type: string
+        TelephoneNumbers:
+          type: array
+          items:
+            type: object
+            properties:
+              Number:
+                type: string
+              Type:
+                type: string
+        Addresses:
+          type: array
+          items:
+            type: object
+            properties:
+              House:
+                type: string
+              Street:
+                type: string
+              Locality:
+                type: string
+              City:
+                type: string
+              County:
+                type: string
+              Country:
+                type: string
+              Postcode:
+                type: string
+        Vehicles:
+          type: array
+          items:
+            type: object
+            properties:
+              ratingArea:
+                type: string
+              VRM:
+                type: string
+              VehicleType:
+                type: string
+              Abicode:
+                type: string
+              DeclaredPurchaseDate:
+                type: string
+                format: date-time
+              ncdDetails:
+                type: object
+                properties:
+                  years:
+                    type: integer
+                    format: int32
+                  protectedNcd:
+                    type: boolean
+        DeclaredClaims:
+          type: array
+          items:
+            type: object
+            properties:
+              Incidentdate:
+                type: string
+                format: date-time
+              ClaimType:
+                type: string
+              ClaimDetails:
+                type: string
+              ClaimStatus:
+                type: string
+              ClaimAmount:
+                type: number
+              AtFault:
+                type: boolean
+    ResponseBody:
+      type: object
+      properties:
+        Person:
+          type: object
+          properties:
+            SearchRef:
+              type: string
+            CustomerInsuredPartyId:
+              type: string
+            PolicyDetailsId:
+              type: string
+            PolicyDetailsHistoryId:
+              type: string
+            PolicyStartDate:
+              type: string
+              format: date-time
+            ClaimId:
+              type: string
+            Title:
+              type: string
+            Forename:
+              type: string
+            Middlename:
+              type: string
+            Surname:
+              type: string
+            MainDriver:
+              type: boolean
+            DOB:
+              type: string
+              format: date-time
+            Type:
+              type: string
+            DLN:
+              type: string
+            Gender:
+              type: string
+            MaritalStatus:
+              type: string
+            Email:
+              type: string
+            SourceOfBusinessId:
+              type: string
+            TelephoneNumbers:
+              type: array
+              items:
+                type: object
+                properties:
+                  Number:
+                    type: string
+                  Type:
+                    type: string
+            Addresses:
+              type: array
+              items:
+                type: object
+                properties:
+                  House:
+                    type: string
+                  Street:
+                    type: string
+                  Locality:
+                    type: string
+                  City:
+                    type: string
+                  County:
+                    type: string
+                  Country:
+                    type: string
+                  Postcode:
+                    type: string
+            Vehicles:
+              type: array
+              items:
+                type: object
+                properties:
+                  ratingArea:
+                    type: string
+                  VRM:
+                    type: string
+                  VehicleType:
+                    type: string
+                  Abicode:
+                    type: string
+                  DeclaredPurchaseDate:
+                    type: string
+                    format: date-time
+                  ncdDetails:
+                    type: object
+                    properties:
+                      years:
+                        type: integer
+                        format: int32
+                      protectedNcd:
+                        type: boolean
+            DeclaredClaims:
+              type: array
+              items:
+                type: object
+                properties:
+                  Incidentdate:
+                    type: string
+                    format: date-time
+                  ClaimType:
+                    type: string
+                  ClaimDetails:
+                    type: string
+                  ClaimStatus:
+                    type: string
+                  ClaimAmount:
+                    type: number
+                  AtFault:
+                    type: boolean
+        CUEMotor:
+          type: object
+          properties:
+            ClaimDetails:
+              type: array
+              items:
+                type: object
+                properties:
+                  ClaimNumber:
+                    type: string
+                  PolicyNumber:
+                    type: string
+                  LossSetUpDate:
+                    type: string
+                  InsurerContact:
+                    type: string
+                  NCD:
+                    type: string
+                  CollectivePolicyIndicator:
+                    type: string
+                  IncidentDescription:
+                    type: string
+                  InceptionDate:
+                    type: string
+                  LossDate:
+                    type: string
+                  ClosedDate:
+                    type: string
+                  DelegatedAuthority:
+                    type: string
+                  PolicyType:
+                    type: string
+                  Status:
+                    type: string
+                  CauseOfLoss:
+                    type: string
+                  Insurer:
+                    type: string
+                  PolicyHolder:
+                    type: string
+                  PolicyNumberID:
+                    type: string
+                  MatchLevel:
+                    type: string
+                  Drivers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        Type:
+                          type: string
+                        Name:
+                          type: string
+                        DOB:
+                          type: string
+                        Address:
+                          type: string
+                        VRM:
+                          type: string
+                  ThirdPartyDetails:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        TPType:
+                          type: string
+                        TPDetails:
+                          type: string
+                  Payments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        PaymentType:
+                          type: string
+                        PaymentAmount:
+                          type: string
+        LN:
+          type: object
+          properties:
+            LNRetrospectiveDate:
+              type: string
+            LNReference:
+              type: string
+            LNSIRACapstone:
+              type: string
+            LNSIRAFreewayScore:
+              type: integer
+              format: int32
+            LNSIRAFreewaySuccess:
+              type: boolean
+            LNSIRAFreewayClear:
+              type: boolean
+            LNSIRAOtherScore:
+              type: integer
+              format: int32
+            LNSIRAOtherSuccess:
+              type: boolean
+            LNSIRAOtherClear:
+              type: boolean
+            LNSIRAFinanceScore:
+              type: integer
+              format: int32
+            LNSIRAFinanceSuccess:
+              type: boolean
+            LNSIRAFinanceClear:
+              type: boolean
+            LNRiskAttractCapstoneProp:
+              type: string
+            LNCUECapstone:
+              type: string
+            LNCUECapstoneSuccess:
+              type: boolean
+            LNCUENoOfUndisclosedFault:
+              type: integer
+              format: int32
+            LNCUENoOfUndisclosedNonFault:
+              type: integer
+              format: int32
+            LNCUE3YrCapstone:
+              type: string
+            LNCUE3YrCapstoneSuccess:
+              type: boolean
+            LNCUE3YrNoOfUndisclosedFault:
+              type: integer
+              format: int32
+            LNCUE3YrNoOfUndisclosedNonFault:
+              type: integer
+              format: int32
+            LNCUE4YrCapstone:
+              type: string
+            LNCUE4YrCapstoneSuccess:
+              type: boolean
+            LNCUE4YrNoOfUndisclosedFault:
+              type: integer
+              format: int32
+            LNCUE4YrNoOfUndisclosedNonFault:
+              type: integer
+              format: int32
+            LNRiskAttractCapstoneSuccess:
+              type: boolean
+            LNRiskAttractCapstonePropMatchLevel:
+              type: string
+            LNRiskAttractCapstonePropNoOfCCJs:
+              type: integer
+              format: int32
+            LNRiskAttractCapstonePropNoOfCCJsHJJs:
+              type: integer
+              format: int32
+            LNRiskAttractCapstonePropAttractScore:
+              type: integer
+              format: int32
+            LNEmailageRiskBandCapstoneSuccess:
+              type: boolean
+            LNEmailageRiskBand:
+              type: integer
+              format: int32
+            LNEmailageRiskBandDesc:
+              type: string
+            LNEmailageRiskLevelCapstoneSuccess:
+              type: boolean
+            LNEmailageRiskLevel:
+              type: integer
+              format: int32
+            LNEmailageRiskLevelDesc:
+              type: string
+            LNEmailageOwnerMatchCapstoneSuccess:
+              type: boolean
+            LNEmailageOwnerMatch:
+              type: integer
+              format: int32
+            LNEmailageOwnerMatchDesc:
+              type: string
+            Errors:
+              type: array
+              items:
+                type: object
+                properties:
+                  Type:
+                    type: string
+                  Code:
+                    type: integer
+                  Message:
+                    type: string
+            ClaimDetails:
+              type: array
+              items:
+                type: object
+                properties:
+                  ClaimNumber:
+                    type: string
+                  PolicyNumber:
+                    type: string
+                  LossSetUpDate:
+                    type: string
+                  InsurerContact:
+                    type: string
+                  NCD:
+                    type: string
+                  CollectivePolicyIndicator:
+                    type: string
+                  IncidentDescription:
+                    type: string
+                  InceptionDate:
+                    type: string
+                  LossDate:
+                    type: string
+                  ClosedDate:
+                    type: string
+                  DelegatedAuthority:
+                    type: string
+                  PolicyType:
+                    type: string
+                  Status:
+                    type: string
+                  CauseOfLoss:
+                    type: string
+                  Insurer:
+                    type: string
+                  PolicyHolder:
+                    type: string
+                  PolicyNumberID:
+                    type: string
+                  MatchLevel:
+                    type: string
+                  Drivers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        Type:
+                          type: string
+                        Name:
+                          type: string
+                        DOB:
+                          type: string
+                        Address:
+                          type: string
+                        VRM:
+                          type: string
+                  ThirdPartyDetails:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        TPType:
+                          type: string
+                        TPDetails:
+                          type: string
+                  Payments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        PaymentType:
+                          type: string
+                        PaymentAmount:
+                          type: string
+        ExecutionID:
+          type: string
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-Freeway-Access-Token

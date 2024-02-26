@@ -1,0 +1,3 @@
+App Client ID: n85blvf3tdh9e7iv8xv
+App Secret: fvjxvyc699cyfl475ab
+authorization code: p0e5gxm3u16fua3i

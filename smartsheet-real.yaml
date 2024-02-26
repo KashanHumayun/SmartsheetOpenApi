@@ -1,0 +1,1411 @@
+openapi: 3.0.0
+info:
+  title: Smartsheet OAuth 2.0 API
+  version: 1.0.0
+  description: OAuth 2.0 authentication for Smartsheet API
+
+servers:
+  - url: https://api.smartsheet.com
+
+paths:
+  /b/authorize:
+    get:
+      summary: Smartsheet OAuth Authorization Endpoint
+      description: Endpoint for user authorization
+      parameters:
+        - name: response_type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - code
+        - name: client_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Your client ID obtained when you registered your app.
+        - name: redirect_uri
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Redirect URI for Smartsheet to send the user after authorization.
+        - name: scope
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Space-delimited list of access scopes.
+        - name: state
+          in: query
+          schema:
+            type: string
+          description: An arbitrary string of your choosing.
+      responses:
+        '302':
+          description: Redirect to authorization page
+
+  /token:
+    post:
+      summary: Smartsheet OAuth Token Endpoint
+      description: Endpoint for token exchange
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  enum:
+                    - authorization_code
+                code:
+                  type: string
+                redirect_uri:
+                  type: string
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+              required:
+                - grant_type
+                - code
+                - redirect_uri
+                - client_id
+      responses:
+        '200':
+          description: Token response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                  expires_in:
+                    type: integer
+                  refresh_token:
+                    type: string
+                  scope:
+                    type: string
+  /2.0/webhooks:
+    post:
+      summary: Create a Webhook
+      description: Endpoint for creating a webhook in Smartsheet
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookRequest'
+      responses:
+        '200':
+          description: Webhook created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+        '401':
+          description: Unauthorized - Access token is missing or invalid
+  
+  /2.0/webhooks/{webhookId}:
+    get:
+      summary: Getting a Webhook
+      description: Endpoint for getting a Webhook
+      parameters:
+        - name: webhookId
+          in: path
+          required: true
+          description: The ID of the webhook
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWebhookResponse'
+        '400':
+          description: Unsuccessful response
+    put:
+      summary: Update Webhook
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: webhookId
+          in: path
+          required: true
+          description: The ID of the webhook
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookUpdatePayload'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookUpdateResponse'
+    delete:
+      summary: Delete Webhook
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: webhookId
+          in: path
+          required: true
+          description: The ID of the webhook
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteWebhookResponse'
+  /2.0/sheets/{sheetId}:
+    get:
+      summary: Get Sheet Details
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: sheetId
+          in: path
+          required: true
+          description: The ID of the sheet
+          schema:
+            type: integer
+        - in: query
+          name: level
+          schema:
+            type: integer  # Replace with the appropriate type for level
+          description: The level parameter.
+        - in: query
+          name: include
+          schema:
+            type: string  # Replace with the appropriate type for include
+          description: The include parameter.
+        - in: query
+          name: accessApiLevel
+          schema:
+            type: number  # Replace with the appropriate type for accessApiLevel
+          description: The access API level parameter.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  fromId:
+                    type: number
+                  ownerId:
+                    type: number
+                  accessLevel:
+                    type: string
+                    enum:
+                      - ADMIN
+                      - COMMENTER
+                      - EDITOR
+                      - EDITOR_SHARE
+                      - OWNER
+                      - VIEWER
+                  attachments:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Attachment'
+                  columns:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Column'
+                  createdAt:
+                    type: string
+                  crossSheetReferences:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CrossSheetReference'
+                  dependenciesEnabled:
+                    type: boolean
+                  discussions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Discussion'
+                  effectiveAttachmentOptions:
+                    type: array
+                  favorite:
+                    type: boolean
+                  ganttEnabled:
+                    type: boolean
+                  hasSummaryFields:
+                    type: boolean
+                  modifiedAt:
+                    type: string
+                  name:
+                    type: string
+                  owner:
+                    type: string
+                  permalink:
+                    type: string
+                  projectSettings:
+                    $ref: '#/components/schemas/ProjectSettings'
+                  readOnly:
+                    type: boolean
+                  resourceManagementEnabled:
+                    type: boolean
+                  resourceManagementType:
+                    type: string
+                    enum:
+                      - NONE
+                      - LEGACY_RESOURCE_MANAGEMENT
+                      - RESOURCE_MANAGEMENT_BY_SMARTSHEET
+                  rows:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Row'
+                  showParentRowsForFilters:
+                    type: boolean
+                  source:
+                    $ref: '#/components/schemas/Source'
+                  summary:
+                    $ref: '#/components/schemas/Summary'
+                  totalRowCount:
+                    type: number
+                  userPermissions:
+                    type: object
+                    properties:
+                      summaryPermissions:
+                        type: string
+                        enum:
+                          - ADMIN
+                          - READ_DELETE
+                          - READ_ONLY
+                          - READ_WRITE
+                  userSettings:
+                    type: object
+                    properties:
+                      criticalPathEnabled:
+                        type: boolean
+                      displaySummaryTasks:
+                        type: boolean
+                  version:
+                    type: number
+                  workspace:
+                    $ref: '#/components/schemas/Workspace'
+
+  /2.0/sheets/{sheetId}/rows/{rowId}:
+    get:
+      summary: get the specified Row
+      parameters:
+        - in: path
+          name: sheetId
+          required: true
+          schema:
+            type: number  # Replace with the appropriate type for sheetId
+          description: The ID of the sheet containing the row.
+          example: 123456789
+        - in: path
+          name: rowId
+          required: true
+          schema:
+            type: number  # Replace with the appropriate type for rowId
+          description: The ID of the row to retrieve.
+          example: 987654321
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    description: Row Id.
+                    example: 123456789
+                  sheetId:
+                    type: number
+                    description: Parent sheet Id.
+                    example: 987654321
+                  rowNumber:
+                    type: number
+                    description: Row number within the sheet.
+                    minimum: 1
+                    example: 42
+                  expanded:
+                    type: boolean
+                    description: Indicates whether the row is expanded or collapsed.
+                    example: true
+                  cells:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        columnId:
+                          type: number
+                          description: The Id of the column that the cell is located in.
+                          example: 111222333
+                        columnType:
+                          type: string
+                          description: Only returned if the include query string parameter contains columnType.
+                          example: "TEXT"
+                        value:
+                          type: any
+                          description: A string, number, or a Boolean value depending on the cell type and data.
+                          example: "Hello, World!"
+                        displayValue:
+                          type: string
+                          description: Visual representation of cell contents, as presented to the user in the UI.
+                          example: "Hello, World!"
+                        createdAt:
+                          type: string
+                          description: Date and time of cell creation.
+                          format: date-time
+                          example: "2022-02-26T12:34:56Z"
+                        modifiedAt:
+                          type: string
+                          description: Date and time of the last modification of the cell.
+                          format: date-time
+                          example: "2022-02-27T10:45:32Z"
+                required:
+                  - id
+                  - sheetId
+                  - rowNumber
+                  - expanded
+                  - cells
+      
+components:
+  schemas:
+    SummaryField:
+      type: object
+      properties:
+        id:
+          type: number
+        contactOptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactOption'
+        createdAt:
+          type: string
+        createdBy:
+          $ref: '#/components/schemas/User'
+        displayValue:
+          type: string
+        format:
+          type: string
+        formula:
+          type: string
+        hyperlink:
+          type: object
+        image:
+          type: object
+        index:
+          type: number
+        locked:
+          type: boolean
+        lockedForUser:
+          type: boolean
+        modifiedAt:
+          type: string
+        modifiedBy:
+          $ref: '#/components/schemas/User'
+        objectValue:
+          type: object
+        options:
+          type: array
+          items:
+            type: string
+        symbol:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+          enum:
+            - ABSTRACT_DATETIME
+            - CHECKBOX
+            - CONTACT_LIST
+            - DATE
+            - DATETIME
+            - DURATION
+            - MULTI_CONTACT_LIST
+            - MULTI_PICKLIST
+            - PICKLIST
+            - PREDECESSOR
+            - TEXT_NUMBER
+        validation:
+          type: boolean
+
+    Summary:
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/SummaryField'
+    Workspace:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        accessLevel:
+          type: string
+          enum:
+            - ADMIN
+            - COMMENTER
+            - EDITOR
+            - EDITOR_SHARE
+            - OWNER
+            - VIEWER
+        permalink:
+          type: string
+    Source:
+      type: object
+      properties:
+        id:
+          type: number
+        type:
+          type: string
+          enum:
+            - report
+            - sheet
+            - sight
+            - template
+    Proofs:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: number
+          originalId:
+            type: number
+          name:
+            type: string
+          proofType:
+            type: string
+            enum:
+              - DOCUMENT
+              - IMAGE
+              - MIXED
+              - NONE
+              - VIDEO
+          proofRequestUrl:
+            type: string
+          version:
+            type: number
+          lastUpdatedAt:
+            type: string
+          lastUpdatedBy:
+            $ref: '#/components/schemas/User'
+          isCompleted:
+            type: boolean
+          attachments:
+            $ref: '#/components/schemas/DiscussionAttachment'
+          discussions:
+            $ref: '#/components/schemas/Discussion'
+    Cells:
+      type: object
+      properties:
+        columnId:
+          type: number
+        columnType:
+          type: string
+        conditionalFormat:
+          type: string
+        displayValue:
+          type: string
+        formula:
+          type: string
+        hyperlink:
+          type: object
+          properties:
+            reportId:
+              type: number
+            sheetId:
+              type: number
+            sightId:
+              type: number
+            url:
+              type: string
+        image:
+          type: object
+          properties:
+            altText:
+              type: string
+            height:
+              type: number
+            id:
+              type: string
+            width:
+              type: number
+        linkInFromCell:
+          type: object
+          properties:
+            columnId:
+              type: number
+            rowId:
+              type: number
+            sheetId:
+              type: number
+            sheetName:
+              type: string
+            status:
+              type: string
+              enum:
+                - BLOCKED
+                - BROKEN
+                - CIRCULAR
+                - DISABLED
+                - INACCESSIBLE
+                - INVALID
+                - NOT_SHARED
+                - OK
+        linkOutsToCells:
+          type: array
+          items:
+            type: object
+            properties:
+              columnId:
+                type: number
+              rowId:
+                type: number
+              sheetId:
+                type: number
+              sheetName:
+                type: string
+              status:
+                type: string
+                enum:
+                  - BLOCKED
+                  - BROKEN
+                  - CIRCULAR
+                  - DISABLED
+                  - INACCESSIBLE
+                  - INVALID
+                  - NOT_SHARED
+                  - OK
+        objectValue:
+          type: object
+          properties:
+            objectType:
+              type: string
+              enum:
+                - ABSTRACT_DATETIME
+                - CONTACT
+                - DATE
+                - DATETIME
+                - DURATION
+                - MULTI_CONTACT
+                - MULTI_PICKLIST
+                - PREDECESSOR_LIST
+        overrideValidation:
+          type: boolean
+        strict:
+          type: boolean
+        value:
+          anyOf:
+            - type: string
+            - type: number
+            - type: boolean
+      required:
+        - columnId
+    Row:
+      type: object
+      properties:
+        id:
+          type: number
+        sheetId:
+          type: number
+        accessLevel:
+          type: string
+          enum:
+            - ADMIN
+            - COMMENTER
+            - EDITOR
+            - EDITOR_SHARE
+            - OWNER
+            - VIEWER
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiscussionAttachment'
+        cells:
+          $ref: '#/components/schemas/Cells'
+        columns:
+          $ref: '#/components/schemas/Column'
+        conditionalFormat:
+          type: string
+        createdAt:
+          type: string
+        createdBy:
+          $ref: '#/components/schemas/User'
+        discussions:
+          $ref: '#/components/schemas/Discussion'
+        proofs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Proofs'
+        expanded:
+          type: boolean
+        filteredOut:
+          type: boolean
+        format:
+          type: string
+        inCriticalPath:
+          type: boolean
+        locked:
+          type: boolean
+        lockedForUser:
+          type: boolean
+        modifiedAt:
+          type: string
+        modifiedBy:
+          $ref: '#/components/schemas/User'
+        permaLink:
+          type: string
+        rowNumber:
+          type: number
+        version:
+          type: number
+    DiscussionCommentAttachment:
+      type: object
+      properties:
+        id:
+          type: number
+        parentId:
+          type: number
+        attachmentType:
+          type: string
+          enum:
+            - BOX_COM
+            - DROPBOX*
+            - EGNYTE*
+            - EVERNOTE*
+            - FILE
+            - GOOGLE_DRIVE
+            - LINK
+            - ONEDRIVE
+        attachmentSubType:
+          type: string
+          enum:
+            - DOCUMENT
+            - DRAWING
+            - FOLDER*
+            - PDF
+            - PRESENTATION
+            - SPREADSHEET
+        mimeType:
+          type: string
+        parentType:
+          type: string
+          enum:
+            - COMMENT
+            - PROOF
+            - ROW
+            - SHEET
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          $ref: '#/components/schemas/User'
+        name:
+          type: string
+        sizeInKb:
+          type: number
+        url:
+          type: string
+        urlExpiresInMillis:
+          type: number
+    ProjectSettings:
+      type: object
+      properties:
+        lengthOfDay:
+          type: number
+          minimum: 1
+          maximum: 24
+        nonWorkingDays:
+          type: array
+          items:
+            type: string
+            format: date
+        workingDays:
+          type: array
+          items:
+            type: string
+          enum:
+            - MONDAY
+            - TUESDAY
+            - WEDNESDAY
+            - THURSDAY
+            - FRIDAY
+            - SATURDAY
+            - SUNDAY
+    DiscussionComment:
+      type: object
+      properties:
+        id:
+          type: number
+        modifiedAt:
+          type: string
+          format: date-time
+        text:
+          type: string
+        createdBy:
+          $ref: '#/components/schemas/User'
+        discussionId:
+          type: number
+        discussionCommentAttachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiscussionCommentAttachment'
+        createdAt:
+          type: string
+          format: date-time
+    DiscussionAttachment:
+      type: object
+      properties:
+        id:
+          type: number
+        parentId:
+          type: number
+        attachmentType:
+          type: string
+          enum:
+            - BOX_COM
+            - DROPBOX*
+            - EGNYTE*
+            - EVERNOTE*
+            - FILE
+            - GOOGLE_DRIVE
+            - LINK
+            - ONEDRIVE
+        attachmentSubType:
+          type: string
+          enum:
+            - DOCUMENT
+            - DRAWING
+            - FOLDER*
+            - PDF
+            - PRESENTATION
+            - SPREADSHEET
+        mimeType:
+          type: string
+        parentType:
+          type: string
+          enum:
+            - COMMENT
+            - PROOF
+            - ROW
+            - SHEET
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          $ref: '#/components/schemas/User'
+        name:
+          type: string
+        sizeInKb:
+          type: number
+        url:
+          type: string
+        urlExpiresInMillis:
+          type: number
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+    Discussion:
+      type: object
+      properties:
+        accessLevel:
+          type: string
+          enum:
+            - ADMIN
+            - COMMENTER
+            - EDITOR
+            - EDITOR_SHARE
+            - OWNER
+            - VIEWER
+        id:
+          type: number
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiscussionComment'
+        commentAttachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiscussionAttachment'
+        createdBy:
+          $ref: '#/components/schemas/User'
+        commentCount:
+          type: number
+        lastCommentedAt:
+          type: string
+          format: date-time
+        lastCommentedUser:
+          $ref: '#/components/schemas/User'
+        parentId:
+          type: number
+        parentType:
+          type: string
+          enum:
+            - ROW
+            - SHEET
+        readOnly:
+          type: boolean
+        title:
+          type: string
+    CrossSheetReference:
+      type: object
+      properties:
+        endColumnId:
+          type: number
+          description: "Defines ending edge of range when specifying one or more columns. To specify an entire column, omit the startRowId and endRowId parameters."
+        endRowId:
+          type: number
+          description: "Defines ending edge of range when specifying one or more rows. To specify an entire row, omit the startColumnId and endColumnId parameters."
+        id:
+          type: number
+          description: "Cross-sheet reference Id, guaranteed unique within referencing sheet."
+        name:
+          type: string
+          description: "Friendly name of reference. Auto-generated unless specified in Create Cross-sheet References."
+        startColumnId:
+          type: number
+          description: "Defines beginning edge of range when specifying one or more columns. To specify an entire column, omit the startRowId and endRowId parameters."
+        startRowId:
+          type: number
+          description: "Defines beginning edge of range when specifying one or more rows. To specify an entire row, omit the startColumnId and endColumnId parameters."
+        status:
+          type: string
+          enum:
+            - BLOCKED
+            - BROKEN
+            - CIRCULAR
+            - DISABLED
+            - INVALID/UNKNOWN
+            - NOT-SHARED
+            - OK
+          description: "Status of request."
+        sourceSheetId:
+          type: number
+          description: "Sheet Id of source sheet."
+    CrossSheetReferences:
+      type: array
+      items:
+        $ref: '#/components/schemas/CrossSheetReference'
+      description: "Array of CrossSheetReference objects. Only returned if the include query string parameter contains crossSheetReferences."
+    AutoNumberFormat:
+      type: object
+      properties:
+        fill:
+          type: string
+          description: "Indicates zero-padding. Must be between 0 and 10 '0' (zero) characters."
+        prefix:
+          type: string
+          description: "The prefix. Can include the date tokens: {DD} {MM} {YY} {YYYY}"
+        startingNumber:
+          type: number
+          description: "The starting number for the auto-id."
+        suffix:
+          type: string
+          description: "The suffix. Can include the date tokens: {DD} {MM} {YY} {YYYY}"
+    ContactOption:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: "A parsable email address."
+        name:
+          type: string
+          description: "Can be a user's name, display name, or free text."
+    ColumnOptions:
+      type: array
+      items:
+        type: string
+      description: "Array of the options available for the column."
+    Column:
+      type: object
+      properties:
+        autoNumberFormat:
+          $ref: '#/components/schemas/AutoNumberFormat'
+          description: "Object that describes how the System Column type of 'AUTO_NUMBER' is auto-generated."
+        contactOptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactOption'
+          description: "Array of ContactOption objects to specify a pre-defined list of values for the column."
+        description:
+          type: string
+          description: "Column description."
+        format:
+          type: string
+          description: "The format descriptor. Only returned if the include query string parameter contains format and this column has a non-default format applied to it."
+        formula:
+          type: string
+          description: "The formula for the column, if set."
+        hidden:
+          type: boolean
+          description: "Indicates whether the column is hidden."
+        id:
+          type: number
+          description: "Column Id."
+        index:
+          type: number
+          description: "Column index or position. This number is zero-based."
+        locked:
+          type: boolean
+          description: "Indicates whether the column is locked. In a response, a value of true indicates that the column has been locked by the sheet owner or the admin."
+        lockedForUser:
+          type: boolean
+          description: "Indicates whether the column is locked for the requesting user. This attribute may be present in a response, but cannot be specified in a request."
+        options:
+          $ref: '#/components/schemas/ColumnOptions'
+          description: "Array of the options available for the column."
+        primary:
+          type: boolean
+          description: "Returned only if the column is the Primary Column (value = true)."
+        symbol:
+          type: string
+          description: "When applicable for CHECKBOX or PICKLIST column types. See Symbol Columns."
+        systemColumnType:
+          type: string
+          enum:
+            - AUTO_NUMBER
+            - CREATED_BY
+            - CREATED_DATE
+            - MODIFIED_BY
+            - MODIFIED_DATE
+          description: "See System Columns."
+        tags:
+          type: array
+          items:
+            type: string
+            enum:
+              - CALENDAR_END_DATE
+              - CALENDAR_START_DATE
+              - CARD_DONE
+              - GANTT_ALLOCATION
+              - GANTT_ASSIGNED_RESOURCE
+              - GANTT_DISPLAY_LABEL
+              - GANTT_DURATION
+              - GANTT_END_DATE
+              - GANTT_PERCENT_COMPLETE
+              - GANTT_PREDECESSOR
+              - GANTT_START_DATE
+              - BASELINE_START_DATE
+              - BASELINE_END_DATE
+              - BASELINE_VARIANCE
+          description: "Set of tags to indicate special columns."
+        title:
+          type: string
+          description: "Column title."
+        type:
+          type: string
+          enum:
+            - ABSTRACT_DATETIME
+            - CHECKBOX
+            - CONTACT_LIST
+            - DATE
+            - DATETIME
+            - DURATION
+            - MULTI_CONTACT_LIST
+            - MULTI_PICKLIST
+            - PICKLIST
+            - PREDECESSOR
+            - TEXT_NUMBER
+          description: "See Column Types."
+        validation:
+          type: boolean
+          description: "Indicates whether validation has been enabled for the column (value = true)."
+        version:
+          type: number
+          enum: [0, 1, 2]
+          description: "0: CONTACT_LIST, PICKLIST, or TEXT_NUMBER. 1: MULTI_CONTACT_LIST. 2: MULTI_PICKLIST."
+        width:
+          type: number
+          description: "Display width of the column in pixels."
+    SheetResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Sheet Id
+        fromId:
+          type: number
+          description: The Id of the template from which to create the sheet. This attribute can be specified in a request, but is never present in a response.
+        ownerId:
+          type: number
+          description: User Id of the sheet owner.
+        accessLevel:
+          type: string
+          enum: ["ADMIN", "COMMENTER", "EDITOR", "EDITOR_SHARE", "OWNER", "VIEWER"]
+          description: Access level of the user.
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+          description: Array of attachments.
+    Attachment:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Attachment Id
+        parentId:
+          type: number
+          description: The Id of the parent.
+        attachmentType:
+          type: string
+          enum: ["BOX_COM", "DROPBOX*", "EGNYTE*", "EVERNOTE*", "FILE", "GOOGLE_DRIVE", "LINK", "ONEDRIVE"]
+          description: Attachment type. * types are not supported for Smartsheet.gov accounts.
+        attachmentSubType:
+          type: string
+          enum: ["DOCUMENT", "DRAWING", "FOLDER*", "PDF", "PRESENTATION", "SPREADSHEET"]
+          description: Attachment sub type. * type is for EGNYTE values and the rest are GOOGLE_DRIVE values.
+        mimeType:
+          type: string
+          description: Attachment MIME type.
+        parentType:
+          type: string
+          enum: ["COMMENT", "PROOF", "ROW", "SHEET"]
+          description: The type of object the attachment belongs to.
+        createdAt:
+          oneOf:
+            - type: string
+              format: date-time
+            - type: number
+          description: Timestamp or string when the attachment was created.
+        createdBy:
+          $ref: '#/components/schemas/User'
+        name:
+          type: string
+          description: Attachment name.
+        sizeInKb:
+          type: number
+          description: The size of the file, if the attachmentType is FILE.
+        url:
+          type: string
+          description: Attachment temporary URL (files only).
+        urlExpiresInMillis:
+          type: number
+          description: Attachment temporary URL time to live (files only).
+    DeleteWebhookResponse:
+      type: object
+      properties:
+        version:
+          type: integer
+          description: The version of the webhook
+        failedItems:
+          type: array
+          items:
+            type: object
+            properties:
+              rowId:
+                type: integer
+              error:
+                type: object
+                properties:
+                  refId:
+                    type: string
+                  errorCode:
+                    type: integer
+                  message:
+                    type: string
+              index:
+                type: integer
+          description: List of failed items during the deletion
+        message:
+          type: string
+          description: The result message
+        resultCode:
+          type: integer
+          description: The result code
+    WebhookUpdatePayload:
+      type: object
+      properties:
+        callbackUrl:
+          type: string
+          description: The updated callback URL for the webhook
+        enabled:
+          type: boolean
+          description: Indicates whether the webhook should be enabled
+        events:
+          type: array
+          items:
+            type: string
+          description: List of events the webhook should be subscribed to
+        name:
+          type: string
+          description: The updated name of the webhook
+        version:
+          type: integer
+          description: The updated version of the webhook
+    WebhookUpdateResponse:
+      type: object
+      properties:
+        version:
+          type: integer
+          description: The version of the updated webhook
+        failedItems:
+          type: array
+          items:
+            type: object
+            properties:
+              rowId:
+                type: integer
+                description: The ID of the row that failed to update
+              error:
+                type: object
+                properties:
+                  refId:
+                    type: string
+                    description: The reference ID for the error
+                  errorCode:
+                    type: integer
+                    description: The error code
+                  message:
+                    type: string
+                    description: A message describing the error
+              index:
+                type: integer
+                description: The index of the failed item in the request
+        message:
+          type: string
+          description: A message indicating the result of the update
+        resultCode:
+          type: integer
+          description: The result code of the update
+        result:
+          $ref: '#/components/schemas/GetWebhookResponse'
+    GetWebhookResponse:
+      type: object
+      properties:
+        callbackUrl:
+          type: string
+          description: The callback URL for the webhook
+        enabled:
+          type: boolean
+          description: Indicates whether the webhook is enabled
+        events:
+          type: array
+          items:
+            type: string
+          description: List of events the webhook is subscribed to
+        name:
+          type: string
+          description: The name of the webhook
+        version:
+          type: integer
+          description: The version of the webhook
+        id:
+          type: integer
+          description: The unique identifier for the webhook
+        apiClientId:
+          type: integer
+          description: The ID of the API client associated with the webhook
+        scopeObjectId:
+          type: integer
+          description: The ID of the scope object (e.g., sheet) for the webhook
+        apiClientName:
+          type: string
+          description: The name of the API client associated with the webhook
+        createdAt:
+          type: string
+          format: date-time
+          description: The timestamp when the webhook was created
+        disabledDetails:
+          type: string
+          description: Details about why the webhook is disabled
+        modifiedAt:
+          type: string
+          format: date-time
+          description: The timestamp when the webhook was last modified
+        scope:
+          type: string
+          description: The scope of the webhook (e.g., sheet)
+        sharedSecret:
+          type: string
+          description: The shared secret for securing the webhook callbacks
+        stats:
+          type: object
+          properties:
+            lastCallbackAttempt:
+              type: string
+              format: date-time
+              description: The timestamp of the last callback attempt
+            lastCallbackAttemptRetryCount:
+              type: integer
+              description: The retry count of the last callback attempt
+            lastSuccessfulCallback:
+              type: string
+              format: date-time
+              description: The timestamp of the last successful callback
+        status:
+          type: string
+          description: The status of the webhook (e.g., ENABLED)
+        subscope:
+          type: object
+          properties:
+            columnIds:
+              type: array
+              items:
+                type: string
+              description: List of column IDs for the subscope
+    WebhookRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        callbackUrl:
+          type: string
+        scope:
+          type: string
+        scopeObjectId:
+          type: integer
+        events:
+          type: array
+          items:
+            type: string
+        version:
+          type: integer
+        subscope:
+          type: object
+          properties:
+            columnIds:
+              type: array
+              items:
+                type: string
+      required:
+        - name
+        - callbackUrl
+        - scope
+        - scopeObjectId
+        - events
+        - version
+    WebhookResponse:
+      type: object
+      properties:
+        version:
+          type: integer
+        failedItems:
+          type: array
+          items:
+            type: object
+            properties:
+              rowId:
+                type: integer
+              error:
+                type: object
+                properties:
+                  refId:
+                    type: string
+                  errorCode:
+                    type: integer
+                  message:
+                    type: string
+              index:
+                type: integer
+        message:
+          type: string
+        resultCode:
+          type: integer
+        result:
+          type: object
+          properties:
+            callbackUrl:
+              type: string
+            enabled:
+              type: boolean
+            events:
+              type: array
+              items:
+                type: string
+            name:
+              type: string
+            version:
+              type: integer
+            id:
+              type: integer
+            apiClientId:
+              type: integer
+            scopeObjectId:
+              type: integer
+            apiClientName:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            disabledDetails:
+              type: string
+            modifiedAt:
+              type: string
+              format: date-time
+            scope:
+              type: string
+            sharedSecret:
+              type: string
+            stats:
+              type: object
+              properties:
+                lastCallbackAttempt:
+                  type: string
+                  format: date-time
+                lastCallbackAttemptRetryCount:
+                  type: integer
+                lastSuccessfulCallback:
+                  type: string
+                  format: date-time
+            status:
+              type: string
+            subscope:
+              type: object
+              properties:
+                columnIds:
+                  type: array
+                  items:
+                    type: string
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.smartsheet.com/b/authorize
+          tokenUrl: https://api.smartsheet.com/2.0/token
+          scopes:
+            ADMIN_WEBHOOKS: Create, delete, and update webhooks; get all webhooks; reset shared secret.
+            ADMIN_WORKSPACES: Create and manage workspaces and folders, including sharing.
+            READ_EVENTS: Retrieve events.
+            READ_SHEETS: Read all sheet data, including attachments, discussions, and cell data.
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+
+
