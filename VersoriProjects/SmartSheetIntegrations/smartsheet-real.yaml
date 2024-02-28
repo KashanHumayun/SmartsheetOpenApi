@@ -93,6 +93,85 @@ paths:
                   scope:
                     type: string
   /2.0/webhooks:
+    get:
+      summary: Get a list of webhooks
+      description: Getting a list of webhooks
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  pageNumber:
+                    type: integer
+                  pageSize:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  totalCount:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        callbackUrl:
+                          type: string
+                        enabled:
+                          type: boolean
+                        events:
+                          type: array
+                          items:
+                            type: string
+                        name:
+                          type: string
+                        version:
+                          type: integer
+                        id:
+                          type: integer
+                        apiClientId:
+                          type: integer
+                        scopeObjectId:
+                          type: integer
+                        apiClientName:
+                          type: string
+                        createdAt:
+                          type: string
+                          format: date-time
+                        disabledDetails:
+                          type: string
+                        modifiedAt:
+                          type: string
+                          format: date-time
+                        scope:
+                          type: string
+                        sharedSecret:
+                          type: string
+                        stats:
+                          type: object
+                          properties:
+                            lastCallbackAttempt:
+                              type: string
+                              format: date-time
+                            lastCallbackAttemptRetryCount:
+                              type: integer
+                            lastSuccessfulCallback:
+                              type: string
+                              format: date-time
+                        status:
+                          type: string
+                        subscope:
+                          type: object
+                          properties:
+                            columnIds:
+                              type: array
+                              items:
+                                type: string
+
     post:
       summary: Create a Webhook
       description: Endpoint for creating a webhook in Smartsheet
@@ -159,6 +238,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WebhookUpdateResponse'
+        '404':
+          description: Unsuccessful response 
+
     delete:
       summary: Delete Webhook
       security:
@@ -178,6 +260,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DeleteWebhookResponse'
+        '404':
+          description: Unsuccessful response 
+
   /2.0/sheets/{sheetId}:
     get:
       summary: Get Sheet Details
@@ -250,6 +335,8 @@ paths:
                       $ref: '#/components/schemas/Discussion'
                   effectiveAttachmentOptions:
                     type: array
+                    items:
+                      type: string
                   favorite:
                     type: boolean
                   ganttEnabled:
@@ -309,10 +396,125 @@ paths:
                     type: number
                   workspace:
                     $ref: '#/components/schemas/Workspace'
+        '404':
+          description: Unsuccessful response 
 
+  /2.0/sheets/{sheetId}/rows:
+    put:
+      description: Update Rows
+      summary: Updating the rows in a specified sheet
+      parameters:
+        - in: path
+          name: sheetId
+          required: true
+          schema:
+            type: string
+          description: The ID of the sheet to update rows.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  cells:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        columnId:
+                          type: number
+                        image:
+                          type: object
+                          properties:
+                            altText:
+                              type: string
+                          required:
+                            - altText
+                        value:
+                          type: string
+                        objectValue:
+                          type: object
+                          properties:
+                            objectType:
+                              type: string
+                              enum:
+                                - MULTI_CONTACT
+                              required:
+                                - objectType
+                            values:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  objectType:
+                                    type: string
+                                    enum:
+                                      - CONTACT
+                                    required:
+                                      - objectType
+                                  email:
+                                    type: string
+                                    format: email
+                                  name:
+                                    type: string
+                      required:
+                        - columnId
+      responses:
+        '200':
+          description: Rows updated successfully
+
+
+
+
+    post:
+      description: Add New Row
+      summary: Adding a new row to a given sheet
+      parameters:
+        - name: sheetId
+          in: path
+          required: true
+          description: The ID of the sheet
+          schema:
+            type: integer
+
+      requestBody:
+        content: 
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  toBottom:
+                    type: boolean
+                  cells:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        columnId:
+                          type: number
+                        value:
+                          type: string
+                        strict:
+                          type: boolean
+      responses:
+        '200':
+          description: Row added Successfully
+
+      security:
+        - bearerAuth: []
+      
   /2.0/sheets/{sheetId}/rows/{rowId}:
     get:
       summary: get the specified Row
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: sheetId
@@ -367,7 +569,7 @@ paths:
                           description: Only returned if the include query string parameter contains columnType.
                           example: "TEXT"
                         value:
-                          type: any
+                          type: string
                           description: A string, number, or a Boolean value depending on the cell type and data.
                           example: "Hello, World!"
                         displayValue:
@@ -390,7 +592,69 @@ paths:
                   - rowNumber
                   - expanded
                   - cells
-      
+        '404':
+          description: Unsuccessful response 
+
+  /2.0/sheets:
+    get:
+      summary: Getting list of all sheets that user has access to.
+      security: 
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response to get all sheets
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  pageNumber:
+                    type: integer
+                  pageSize: 
+                    type: integer
+                  totalPages:
+                    type: integer
+                  totalCount:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        accessLevel: 
+                          type: string
+                          enum:
+                            - ADMIN
+                            - COMMENTER
+                            - EDITOR
+                            - EDITOR_SHARE
+                            - OWNER
+                            - VIEWER
+                        createdAt:
+                          type: string
+                          format: date-time
+                        modifiedAt: 
+                          type: string
+                          format: date-time
+                        name: 
+                          type: string
+                        permalink: 
+                          type: string
+                        version:
+                          type: integer
+                        source: 
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            type:
+                              type: string
+        '404':
+          description: Unsuccessful response 
+
+
 components:
   schemas:
     SummaryField:
@@ -452,7 +716,6 @@ components:
             - TEXT_NUMBER
         validation:
           type: boolean
-
     Summary:
       type: object
       properties:
@@ -623,10 +886,8 @@ components:
         strict:
           type: boolean
         value:
-          anyOf:
-            - type: string
-            - type: number
-            - type: boolean
+            type: string
+
       required:
         - columnId
     Row:
@@ -1406,6 +1667,3 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-
-
-
