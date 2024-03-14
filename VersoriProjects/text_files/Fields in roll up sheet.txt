@@ -1,0 +1,16 @@
+Fields in roll up sheet:
+Provisioned, At Risk, *Project ID*, Project Dashboard, "Project Stage", *Client*, *Sales Rep*, *Close Date*, "Project Name", Approval Status, "Start Date" , "End Date" , "Project Type" , Available Hours, Hours Used, Hours Remaining, Contract Value, Manage
+
+
+0) Get Roll up sheet
+1) Get project tracker id
+2) Retrive project id
+3) Find row with that project in intake sheet
+
+
+confusion:
+1) In integration 1 (ServiceNow project creation) creation we used an intake sheet and created a servicenow project according to this sheet
+2) In integration 2 we are using (Webhook Manual Management) we are using both sheets according to the logic
+The question is we just need to update the in the integrations, according to pdf we just set sys_id(that we retrieve after creating the ServiceNow project) in the project tracker sheet, it's not updating the id in the intake sheet, do i need to update the id there as well?
+
+Kindly test the integrations and let me know if they're okay?

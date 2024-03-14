@@ -1,0 +1,128 @@
+Updates:
+Created logic and workflow to check if servicenow project existed or if not, create a new one
+
+version:1
+callbackurl:https://sgc80tl.sb-smartsheet.switchboard.versori.io
+scope: sheet
+
+code for intergation 1:
+
+module.exports = async function (ctx) {
+    const cells = ctx.selectors("cells")
+
+console.log(cells);
+    return {
+        "active": cells[0].value,
+        "risk": cells[1].value,
+        "number": cells[2].value,
+        "project_dashboard":{
+            "link": cells[3].hyperlink.url,
+            "value": cells[3].value
+        },
+        "phase":cells[4].value,
+        "client": cells[5].value,
+        "sales_rep": cells[6].value,
+        "closed_at": cells[7].value,
+        "short_description": cells[8].value,
+        "approval": cells[9].value,
+        "start_date": cells[10].value,
+        "end_date": cells[11].value,
+        "project_type": cells[12].value,
+        "resource_allocated_cost": cells[13].value,
+        "time_worked": cells[14].value,
+        "remaining_duration": cells[15].value,
+        "budget_cost_project_currency": {
+            "link": cells[16].link,
+            "value": cells[16].value
+        },
+        "assigned_to": cells[17].value,
+        "manager": cells[18].value
+    }
+};
+
+schema:
+
+{
+  "$id": "01HR6XC40PBT2MERRWMSH67BSR",
+  "properties": {
+    "active": {
+      "type": "boolean"
+    },
+    "risk": {
+      "type": "string"
+    },
+    "number": {
+      "type": "string"
+    },
+    "project_dashboard": {
+      "type": "object",
+      "properties": {
+        "link": {
+          "type": "string",
+          "format": "uri",
+          "description": "The link to the project dashboard."
+        },
+        "value": {
+          "type": "string",
+          "description": "The value of the project dashboard."
+        }
+      }
+    },
+    "phase": {
+      "type": "string"
+    },
+    "client": {
+      "type": "string"
+    },
+    "sales_rep": {
+      "type": "string"
+    },
+    "closed_at": {
+      "type": "string"
+    },
+    "short_description": {
+      "type": "string"
+    },
+    "approval": {
+      "type": "string"
+    },
+    "start_date": {
+      "type": "string"
+    },
+    "end_date": {
+      "type": "string"
+    },
+    "project_type": {
+      "type": "string"
+    },
+    "resource_allocated_cost": {
+      "type": "string"
+    },
+    "time_worked": {
+      "type": "string"
+    },
+    "remaining_duration": {
+      "type": "string"
+    },
+    "budget_cost_project_currency": {
+      "type": "object",
+      "properties": {
+        "link": {
+          "type": "string",
+          "format": "uri",
+          "description": "The link to the project dashboard."
+        },
+        "value": {
+          "type": "string",
+          "description": "The value of the project dashboard."
+        }
+      }
+    },
+    "assigned_to": {
+      "type": "string"
+    },
+    "manager": {
+      "type": "string"
+    }
+  }
+}

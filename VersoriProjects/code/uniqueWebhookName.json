@@ -1,0 +1,14 @@
+{
+    "$id": "01HR9YCQ9996E6XH1MMB4AK6TG",
+    "properties": {
+      "webhookname": {
+        "type": "string"
+      },
+      "events": {
+        "type": "array"
+      },
+      "body": {
+        "type": "array"
+      }
+    }
+  }

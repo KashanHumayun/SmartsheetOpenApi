@@ -1,0 +1,881 @@
+{
+	"info": {
+		"_postman_id": "877a56d7-77d7-41cf-b9e5-e2bf13a93608",
+		"name": "Gravity Forms REST API - v2",
+		"description": "Gravity Forms is fully integrated with the WordPress REST API. This allows Gravity Forms data to be created, read, updated, and deleted using requests in JSON format and using WordPress REST API Authentication methods and standard HTTP verbs which are understood by most HTTP clients.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33144656",
+		"_collection_link": "https://www.postman.com/shivapoudel/workspace/api-collections/collection/15735736-877a56d7-77d7-41cf-b9e5-e2bf13a93608?action=share&source=collection_link&creator=33144656"
+	},
+	"item": [
+		{
+			"name": "Forms",
+			"item": [
+				{
+					"name": "Entries",
+					"item": [
+						{
+							"name": "List all form entries",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/gf/v2/forms/:id/entries",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"gf",
+										"v2",
+										"forms",
+										":id",
+										"entries"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a form entries",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"ip\": \"::1\",\r\n    \"is_starred\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/gf/v2/forms/:id/entries",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"gf",
+										"v2",
+										"forms",
+										":id",
+										"entries"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Results",
+					"item": [
+						{
+							"name": "Form Results",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/gf/v2/forms/:id/results",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"gf",
+										"v2",
+										"forms",
+										":id",
+										"results"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Submissions",
+					"item": [
+						{
+							"name": "Form submissions",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"input_1\": \"Shiva Poudel\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/gf/v2/forms/:id/submissions",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"gf",
+										"v2",
+										"forms",
+										":id",
+										"submissions"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "List all forms",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/gf/v2/forms/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"gf",
+								"v2",
+								"forms",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "List all forms - with include",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/gf/v2/forms/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"gf",
+										"v2",
+										"forms",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.16.0"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 01 Mar 2022 09:58:51 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/7.4.1"
+								},
+								{
+									"key": "X-Robots-Tag",
+									"value": "noindex"
+								},
+								{
+									"key": "Link",
+									"value": "<https://gravityforms.local/wp-json/>; rel=\"https://api.w.org/\""
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Access-Control-Expose-Headers",
+									"value": "X-WP-Total, X-WP-TotalPages, Link"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type"
+								},
+								{
+									"key": "Expires",
+									"value": "Wed, 11 Jan 1984 05:00:00 GMT"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, must-revalidate, max-age=0"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"1\": {\n        \"title\": \"Contact Form\",\n        \"description\": \"\",\n        \"labelPlacement\": \"top_label\",\n        \"descriptionPlacement\": \"below\",\n        \"button\": {\n            \"type\": \"text\",\n            \"text\": \"Submit\",\n            \"imageUrl\": \"\"\n        },\n        \"fields\": [],\n        \"version\": \"2.5.16\",\n        \"id\": 1,\n        \"markupVersion\": 2,\n        \"notifications\": {\n            \"61faca52d0d6e\": {\n                \"id\": \"61faca52d0d6e\",\n                \"isActive\": true,\n                \"to\": \"{admin_email}\",\n                \"name\": \"Admin Notification\",\n                \"event\": \"form_submission\",\n                \"toType\": \"email\",\n                \"subject\": \"New submission from {form_title}\",\n                \"message\": \"{all_fields}\"\n            }\n        },\n        \"confirmations\": {\n            \"61faca52d31ee\": {\n                \"id\": \"61faca52d31ee\",\n                \"name\": \"Default Confirmation\",\n                \"isDefault\": true,\n                \"type\": \"message\",\n                \"message\": \"Thanks for contacting us! We will get in touch with you shortly.\",\n                \"url\": \"\",\n                \"pageId\": \"\",\n                \"queryString\": \"\"\n            }\n        },\n        \"nextFieldId\": 1,\n        \"is_active\": \"1\",\n        \"date_created\": \"2022-02-02 18:15:46\",\n        \"is_trash\": \"0\"\n    },\n    \"4\": {\n        \"title\": \"API Generated Form\",\n        \"description\": \"This is the description for the form generated by the API\",\n        \"labelPlacement\": \"top_label\",\n        \"button\": {\n            \"type\": \"text\",\n            \"text\": \"\",\n            \"imageUrl\": \"\"\n        },\n        \"fields\": [\n            {\n                \"type\": \"text\",\n                \"id\": 1,\n                \"label\": \"My Text\",\n                \"visibility\": \"visible\",\n                \"pageNumber\": 1,\n                \"fields\": \"\",\n                \"cssClass\": \"\",\n                \"formId\": 4,\n                \"adminLabel\": \"\",\n                \"description\": \"\",\n                \"isRequired\": false,\n                \"allowsPrepopulate\": false,\n                \"inputMask\": false,\n                \"inputMaskValue\": \"\",\n                \"inputMaskIsCustom\": \"\",\n                \"maxLength\": \"\",\n                \"inputType\": \"\",\n                \"errorMessage\": \"\",\n                \"labelPlacement\": \"\",\n                \"descriptionPlacement\": \"\",\n                \"subLabelPlacement\": \"\",\n                \"placeholder\": \"\",\n                \"inputName\": \"\",\n                \"noDuplicates\": false,\n                \"defaultValue\": \"\",\n                \"enableAutocomplete\": false,\n                \"autocompleteAttribute\": \"\",\n                \"inputs\": \"\",\n                \"choices\": \"\",\n                \"conditionalLogic\": \"\"\n            },\n            {\n                \"type\": \"text\",\n                \"id\": 2,\n                \"label\": \"More Text\",\n                \"visibility\": \"visible\",\n                \"pageNumber\": 1,\n                \"fields\": \"\",\n                \"cssClass\": \"\",\n                \"formId\": 4,\n                \"adminLabel\": \"\",\n                \"description\": \"\",\n                \"isRequired\": false,\n                \"allowsPrepopulate\": false,\n                \"inputMask\": false,\n                \"inputMaskValue\": \"\",\n                \"inputMaskIsCustom\": \"\",\n                \"maxLength\": \"\",\n                \"inputType\": \"\",\n                \"errorMessage\": \"\",\n                \"labelPlacement\": \"\",\n                \"descriptionPlacement\": \"\",\n                \"subLabelPlacement\": \"\",\n                \"placeholder\": \"\",\n                \"inputName\": \"\",\n                \"noDuplicates\": false,\n                \"defaultValue\": \"\",\n                \"enableAutocomplete\": false,\n                \"autocompleteAttribute\": \"\",\n                \"inputs\": \"\",\n                \"choices\": \"\",\n                \"conditionalLogic\": \"\"\n            }\n        ],\n        \"version\": \"2.5.16\",\n        \"id\": 4,\n        \"markupVersion\": 2,\n        \"notifications\": [],\n        \"confirmations\": [\n            {\n                \"id\": 0,\n                \"name\": \"Default Confirmation\",\n                \"type\": \"redirect\",\n                \"url\": \"http://www.rocketgenius.com\",\n                \"isDefault\": true\n            },\n            {\n                \"id\": 1,\n                \"name\": \"Confirmation 2\",\n                \"type\": \"message\",\n                \"message\": \"Thanks for contacting us! We will get in touch with you shortly.\",\n                \"isDefault\": false\n            }\n        ],\n        \"nextFieldId\": 3,\n        \"is_active\": \"1\",\n        \"date_created\": \"2022-02-28 20:27:23\",\n        \"is_trash\": \"0\"\n    }\n}"
+						},
+						{
+							"name": "List all forms - without include",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/gf/v2/forms/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"gf",
+										"v2",
+										"forms",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.16.0"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 01 Mar 2022 09:59:51 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/7.4.1"
+								},
+								{
+									"key": "X-Robots-Tag",
+									"value": "noindex"
+								},
+								{
+									"key": "Link",
+									"value": "<https://gravityforms.local/wp-json/>; rel=\"https://api.w.org/\""
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Access-Control-Expose-Headers",
+									"value": "X-WP-Total, X-WP-TotalPages, Link"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type"
+								},
+								{
+									"key": "Expires",
+									"value": "Wed, 11 Jan 1984 05:00:00 GMT"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, must-revalidate, max-age=0"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"1\": {\n        \"id\": \"1\",\n        \"title\": \"Contact Form\",\n        \"entries\": \"0\"\n    },\n    \"4\": {\n        \"id\": \"4\",\n        \"title\": \"API Generated Form\",\n        \"entries\": \"0\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Create a form",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"API Generated Form\",\r\n    \"description\": \"This is the description for the form generated by the API\",\r\n    \"labelPlacement\": \"top_label\",\r\n    \"button\": {\r\n        \"type\": \"text\",\r\n        \"text\": \"\",\r\n        \"imageUrl\": \"\"\r\n    },\r\n    \"fields\": [\r\n        {\r\n            \"id\": \"1\",\r\n            \"label\": \"My Text\",\r\n            \"type\": \"text\"\r\n        },\r\n        {\r\n            \"id\": \"2\",\r\n            \"label\": \"More Text\",\r\n            \"type\": \"text\"\r\n        }\r\n    ],\r\n    \"confirmations\": {\r\n        \"0\": {\r\n            \"id\": 0,\r\n            \"name\": \"Default Confirmation\",\r\n            \"type\": \"redirect\",\r\n            \"url\": \"http://www.rocketgenius.com\",\r\n            \"isDefault\": true\r\n        },\r\n        \"1\": {\r\n            \"id\": 1,\r\n            \"name\": \"Confirmation 2\",\r\n            \"type\": \"message\",\r\n            \"message\": \"Thanks for contacting us! We will get in touch with you shortly.\",\r\n            \"isDefault\": false\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/gf/v2/forms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"gf",
+								"v2",
+								"forms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve a form",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/gf/v2/forms/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"gf",
+								"v2",
+								"forms",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a form",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"API Generated Form (Updated)\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/gf/v2/forms/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"gf",
+								"v2",
+								"forms",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Entries",
+			"item": [
+				{
+					"name": "Notifications",
+					"item": [
+						{
+							"name": "Send an entry notifications",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/gf/v2/entries/1/notifications",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"gf",
+										"v2",
+										"entries",
+										"1",
+										"notifications"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "List all entries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/gf/v2/entries",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"gf",
+								"v2",
+								"entries"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create an entry",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"form_id\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/gf/v2/entries",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"gf",
+								"v2",
+								"entries"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve an entry",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/gf/v2/entries/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"gf",
+								"v2",
+								"entries",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update an entry",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"is_starred\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/gf/v2/entries/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"gf",
+								"v2",
+								"entries",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an entry",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"is_starred\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/gf/v2/entries/:id?force=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"gf",
+								"v2",
+								"entries",
+								":id"
+							],
+							"query": [
+								{
+									"key": "force",
+									"value": "true"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Route",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/gf/v2/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"gf",
+						"v2",
+						""
+					],
+					"query": [
+						{
+							"key": "_field_ids",
+							"value": "1.6,1.3",
+							"description": "A comma separated list of fields to include in the response.",
+							"disabled": true
+						},
+						{
+							"key": "_labels",
+							"value": "1",
+							"description": "Enables the inclusion of field labels in the results. Use the value “1” to include labels.",
+							"disabled": true
+						},
+						{
+							"key": "form_ids[0]",
+							"value": "1",
+							"description": "An array of forms to include in the response.",
+							"disabled": true
+						},
+						{
+							"key": "form_ids[1]",
+							"value": "2",
+							"description": "An array of forms to include in the response.",
+							"disabled": true
+						},
+						{
+							"key": "form_ids[2]",
+							"value": "3",
+							"description": "An array of forms to include in the response.",
+							"disabled": true
+						},
+						{
+							"key": "_envelope",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test kaliforms",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "wYz5 3fH7 4ZFg Aydi 87fa qR8K",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/kaliforms/v1/forms",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"kaliforms",
+						"v1",
+						"forms"
+					],
+					"query": [
+						{
+							"key": "_field_ids",
+							"value": "1.6,1.3",
+							"description": "A comma separated list of fields to include in the response.",
+							"disabled": true
+						},
+						{
+							"key": "_labels",
+							"value": "1",
+							"description": "Enables the inclusion of field labels in the results. Use the value “1” to include labels.",
+							"disabled": true
+						},
+						{
+							"key": "form_ids[0]",
+							"value": "1",
+							"description": "An array of forms to include in the response.",
+							"disabled": true
+						},
+						{
+							"key": "form_ids[1]",
+							"value": "2",
+							"description": "An array of forms to include in the response.",
+							"disabled": true
+						},
+						{
+							"key": "form_ids[2]",
+							"value": "3",
+							"description": "An array of forms to include in the response.",
+							"disabled": true
+						},
+						{
+							"key": "_envelope",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test kaliforms Copy",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "wYz5 3fH7 4ZFg Aydi 87fa qR8K",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/kaliforms/v1/forms",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"kaliforms",
+						"v1",
+						"forms"
+					],
+					"query": [
+						{
+							"key": "_field_ids",
+							"value": "1.6,1.3",
+							"description": "A comma separated list of fields to include in the response.",
+							"disabled": true
+						},
+						{
+							"key": "_labels",
+							"value": "1",
+							"description": "Enables the inclusion of field labels in the results. Use the value “1” to include labels.",
+							"disabled": true
+						},
+						{
+							"key": "form_ids[0]",
+							"value": "1",
+							"description": "An array of forms to include in the response.",
+							"disabled": true
+						},
+						{
+							"key": "form_ids[1]",
+							"value": "2",
+							"description": "An array of forms to include in the response.",
+							"disabled": true
+						},
+						{
+							"key": "form_ids[2]",
+							"value": "3",
+							"description": "An array of forms to include in the response.",
+							"disabled": true
+						},
+						{
+							"key": "_envelope",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{consumer_secret}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{consumer_key}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://gravityforms.local/wp-json",
+			"type": "string"
+		},
+		{
+			"key": "consumer_key",
+			"value": "ck_d31843e38241dce722475bbb438f8c25007f9058",
+			"type": "string"
+		},
+		{
+			"key": "consumer_secret",
+			"value": "cs_de225ed7fe770938763e574c94d129fc098e31fa",
+			"type": "string"
+		}
+	]
+}

@@ -68,49 +68,7 @@ paths:
           description: OK
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  datacontenttype:
-                    type: string
-                    description: Content type of the data.
-                  time:
-                    type: string
-                    format: date-time
-                    description: Time of the callback.
-                  data:
-                    type: object
-                    properties:
-                      webhookId:
-                        type: number
-                        description: Id of the corresponding webhook.
-                      challenge:
-                        type: string
-                        description: Challenge value received from Smartsheet.
-                  kproxyrequest:
-                    type: string
-                    description: Value of kproxyrequest.
-                  xrequestid:
-                    type: string
-                    description: Value of xrequestid.
-                  xdatadogsamplingpriority:
-                    type: string
-                    description: Value of xdatadogsamplingpriority.
-                  xdatadogparentid:
-                    type: string
-                    description: Value of xdatadogparentid.
-                  xdatadogtraceid:
-                    type: string
-                    description: Value of xdatadogtraceid.
-                  smartsheethookchallenge:
-                    type: string
-                    description: Value of smartsheethookchallenge.
-                  boardid:
-                    type: string
-                    description: Board Id.
-                  executionid:
-                    type: string
-                    description: Execution Id.
+              schema: {}
 
       callbacks:
         smartSheetCallback:

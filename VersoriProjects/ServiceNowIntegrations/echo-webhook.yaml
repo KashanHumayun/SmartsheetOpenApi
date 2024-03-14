@@ -1,0 +1,80 @@
+{
+  "openapi": "3.0.0",
+  "info": { "title": "My First App API", "version": "1.0.0" },
+  "servers":
+    [
+      {
+        "url": "https://my-first-app.versori.com",
+        "description": "My First App API",
+        "variables": { "version": { "enum": ["v1"], "default": "v1" } },
+      },
+    ],
+  "paths":
+    {
+      "/customer/created":
+        {
+          "post":
+            {
+              "security": [{ "ApiKeyAuth": [] }],
+              "summary": "Customer created webhook",
+              "description": "This is a hook that posts customer data in JSON format:",
+              "tags": ["customer"],
+              "operationId": "when/a/customer/is/created",
+              "callbacks":
+                {
+                  "customerCreated":
+                    {
+                      "{$request.body#/callbackUrl}":
+                        {
+                          "post":
+                            {
+                              "requestBody":
+                                {
+                                  "content":
+                                    {
+                                      "application/json":
+                                        {
+                                          "schema":
+                                            {
+                                              "$ref": "#/components/schemas/Customer",
+                                            },
+                                        },
+                                    },
+                                },
+                              "responses":
+                                {
+                                  "200":
+                                    {
+                                      "$ref": "#/components/responses/no_content",
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    },
+  "components":
+    {
+      "schemas":
+        {
+          "Customer":
+            {
+              "required": ["email", "subject", "body"],
+              "properties":
+                {
+                  "email": { "type": "string" },
+                  "subject": { "type": "string" },
+                  "body": { "type": "string" },
+                },
+            },
+        },
+      "responses": { "no_content": { "description": "No content" } },
+      "securitySchemes":
+        {
+          "ApiKeyAuth":
+            { "type": "apiKey", "in": "header", "name": "X-API-KEY" },
+        },
+    },
+}

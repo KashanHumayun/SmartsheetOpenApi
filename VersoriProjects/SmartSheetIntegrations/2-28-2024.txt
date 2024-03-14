@@ -1,0 +1,15 @@
+Updates:
+0: Smartsheet Webhook and ServiceNow credentials + creating a project in ServiceNow confusion is still pending 
+1: Created Yaml endpoint for add a new row for Smartsheet( Related to Line 36)
+2: Created yaml endpoint for updating a row(Related to Line 36)
+3: Researched again to find any enpoint to create a project in ServiceNow but failed (Related to Line 10,19,28,37)
+4: Checked the yaml file and comparing schemas to Smartsheet api documentation for any potential error
+5: Created ServiceNow account to find anything useful (Related to Line 10,19,28,37)
+6: The only useful information i found out that its an automation tool and should be workflows created,( it too uses something similar to sheets with tables and there are APIs available to add records in table, APIs are available to CRUD operations for table ) ,their but not able to find anything about creating a PROJECT there using any apis endpoints, (Related to Line 10,19,28,37)
+(Note: Smartsheet's YAML is completed for all four use cases but verification is remaining as there are no credentials avaiable)
+
+Question:
+Issues:
+1:Things to be noted for futue:
+	1) In updating a row endpoint we set the id to the string not integer
+        2) There's an issue in the webhookid its confusing as if its string or integer, like in documentation sometimes its written as string while in curl its given as integer (when getting, updating or deleting a webhook) 

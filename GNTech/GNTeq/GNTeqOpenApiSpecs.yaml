@@ -1,0 +1,948 @@
+openapi: 3.0.0
+info:
+  title: GNTeq API
+  description: GNTeq API for all endpoints
+  version: 1.0.0
+servers:
+  - url: https://dev.gnteq.app/api
+paths:
+  
+  /gnconnect/Shipments:
+    post:
+      summary: Create Shipment
+      description: Endpoint to create a shipment in GNConnect.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                required:
+                  - shipper
+                  - consignee
+                  - customerCode
+                  - branchCode
+                  - shippingDateTime
+                  - descriptionOfGoods
+                  - numberOfPieces
+                  - customsDeclaredValue
+                  - customsDeclaredValueCurrency
+                  - productType
+                  - supplierCode
+                properties:
+                  shipper:
+                    type: object
+                    required:
+                      - shipperAddress
+                      - shipperContact
+                    properties:
+                      shipperAddress:
+                        type: object
+                        properties:
+                          countryCode:
+                            type: string
+                          city:
+                            type: string
+                          line1:
+                            type: string
+                          line2:
+                            type: string
+                          line3:
+                            type: string
+                          postCode:
+                            type: string
+                          longitude:
+                            type: string
+                          latitude:
+                            type: string
+                          locationCode1:
+                            type: string
+                          locationCode2:
+                            type: string
+                          locationCode3:
+                            type: string
+                      shipperContact:
+                        type: object
+                        properties:
+                          personName:
+                            type: string
+                          companyName:
+                            type: string
+                          phoneNumber1:
+                            type: string
+                          phoneNumber2:
+                            type: string
+                          cellPhone:
+                            type: string
+                          emailAddress:
+                            type: string
+                          type:
+                            type: string
+                  consignee:
+                    type: object
+                    required:
+                      - consigneeAddress
+                      - consigneeContact
+                    properties:
+                      consigneeAddress:
+                        type: object
+                        properties:
+                          countryCode:
+                            type: string
+                          city:
+                            type: string
+                          district:
+                            type: string
+                          line1:
+                            type: string
+                          line2:
+                            type: string
+                          line3:
+                            type: string
+                          postCode:
+                            type: string
+                          longitude:
+                            type: string
+                          latitude:
+                            type: string
+                          locationCode1:
+                            type: string
+                          locationCode2:
+                            type: string
+                          locationCode3:
+                            type: string
+                      consigneeContact:
+                        type: object
+                        properties:
+                          personName:
+                            type: string
+                          companyName:
+                            type: string
+                          phoneNumber1:
+                            type: string
+                          phoneNumber2:
+                            type: string
+                          cellPhone:
+                            type: string
+                          emailAddress:
+                            type: string
+                          type:
+                            type: string
+                          civilId:
+                            type: string
+                  customerCode:
+                    type: string
+                    maxLength: 20
+                  branchCode:
+                    type: string
+                    maxLength: 20
+                  shippingDateTime:
+                    type: string
+                    format: date
+                    minLength: 1
+                  descriptionOfGoods:
+                    type: string
+                    maxLength: 100
+                  numberOfPieces:
+                    type: string
+                    maxLength: 3
+                  customsDeclaredValue:
+                    type: string
+                  customsDeclaredValueCurrency:
+                    type: string
+                    maxLength: 3
+                  productType:
+                    type: string
+                    maxLength: 3
+                  supplierCode:
+                    type: string
+                    enum: [ "GnTeq" ]
+                    maxLength: 10
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        quantity:
+                          type: string
+                        weight:
+                          type: object
+                          properties:
+                            unit:
+                              type: string
+                            value:
+                              type: string
+                        customsValue:
+                          type: object
+                          properties:
+                            currencyCode:
+                              type: string
+                            value:
+                              type: string
+                        comments:
+                          type: string
+                        reference:
+                          type: string
+                        commodityCode:
+                          type: string
+                        goodsDescription:
+                          type: string
+                        countryOfOrigin:
+                          type: string
+                        packageType:
+                          type: string
+                        containsDangerousGoods:
+                          type: string
+                  shipmentWeight:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      weightUnit:
+                        type: string
+                      length:
+                        type: string
+                      width:
+                        type: string
+                      height:
+                        type: string
+                      dimensionUnit:
+                        type: string
+                  reference:
+                    type: object
+                    properties:
+                      shipperReference1:
+                        type: string
+                      shipperNote1:
+                        type: string
+                  includeLabel:
+                    type: string
+                  includeOfficeDetails:
+                    type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+
+  /gnconnect/Shipments/Bulk:
+    post:
+      summary: Create Bulk Shipments
+      description: Endpoint to create multiple shipments in bulk.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                required:
+                  - customerCode
+                  - branchCode
+                  - shippingDateTime
+                  - customsDeclaredValueCurrency
+                  - productType
+                  - supplierCode
+                  - consignee
+                  - shipper
+                properties:
+                  customerCode:
+                    type: string
+                    description: The code of the customer.
+                  branchCode:
+                    type: string
+                    description: The branch code.
+                  shippingDateTime:
+                    type: string
+                    format: date
+                    description: The shipping date and time.
+                  customsDeclaredValueCurrency:
+                    type: string
+                    description: The currency for customs declared value.
+                  productType:
+                    type: string
+                    description: The type of product.
+                  supplierCode:
+                    type: string
+                    description: The code of the supplier (fixed value 'GnTeq').
+                    enum: [ "GnTeq" ]
+                  consignee:
+                    type: object
+                    description: Details of the consignee.
+                    properties:
+                      consigneeContact:
+                        type: object
+                        description: Contact details of the consignee.
+                        properties:
+                          personName:
+                            type: string
+                          companyName:
+                            type: string
+                          phoneNumber1:
+                            type: string
+                          phoneNumber2:
+                            type: string
+                          cellPhone:
+                            type: string
+                          emailAddress:
+                            type: string
+                          type:
+                            type: string
+                          civilId:
+                            type: string
+                      consigneeAddress:
+                        type: object
+                        description: Address details of the consignee.
+                        properties:
+                          countryCode:
+                            type: string
+                          city:
+                            type: string
+                          district:
+                            type: string
+                          line1:
+                            type: string
+                          line2:
+                            type: string
+                          line3:
+                            type: string
+                          postCode:
+                            type: string
+                          longitude:
+                            type: string
+                          latitude:
+                            type: string
+                          locationCode1:
+                            type: string
+                          locationCode2:
+                            type: string
+                          locationCode3:
+                            type: string
+                  shipper:
+                    type: object
+                    description: Details of the shipper.
+                    properties:
+                      shipperAddress:
+                        type: object
+                        description: Address details of the shipper.
+                        properties:
+                          countryCode:
+                            type: string
+                          city:
+                            type: string
+                          line1:
+                            type: string
+                          line2:
+                            type: string
+                          line3:
+                            type: string
+                          postCode:
+                            type: string
+                          longitude:
+                            type: string
+                          latitude:
+                            type: string
+                          locationCode1:
+                            type: string
+                          locationCode2:
+                            type: string
+                          locationCode3:
+                            type: string
+                      shipperContact:
+                        type: object
+                        description: Contact details of the shipper.
+                        properties:
+                          personName:
+                            type: string
+                          companyName:
+                            type: string
+                          phoneNumber1:
+                            type: string
+                          phoneNumber2:
+                            type: string
+                          cellPhone:
+                            type: string
+                          emailAddress:
+                            type: string
+                          type:
+                            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+
+  /identity/Authentication/GetToken:
+    post:
+      summary: Get Authentication Token
+      description: |
+        Endpoint to retrieve an authentication token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+
+  /gnconnect/Tracking:
+    post:
+      summary: Track Shipment
+      description: Endpoint to track a shipment in GNConnect.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                airwaybill:
+                  type: string
+                  description: The airwaybill number of the shipment.
+                reference:
+                  type: string
+                  description: Any reference related to the shipment.
+                customerCode:
+                  type: string
+                  description: The code of the customer associated with the shipment.
+                branchCode:
+                  type: string
+                  description: The branch code associated with the shipment.
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+
+  /gnconnect/Shipments/LabelPrint:
+    post:
+      summary: Print Shipment Labels
+      description: Endpoint to print labels for shipments in GNConnect.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                airwaybills:
+                  type: array
+                  items:
+                    type: string
+                  description: List of airwaybill numbers for which labels need to be printed.
+                labelFormat:
+                  type: string
+                  description: The format of the label.
+                labelSize:
+                  type: string
+                  description: The size of the label.
+                customerCode:
+                  type: string
+                  description: The code of the customer associated with the shipments.
+                branchCode:
+                  type: string
+                  description: The branch code associated with the shipments.
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      security:
+        - bearerAuth: []
+  
+  /gnconnect/Shipments/LabelPrintBulk:
+    post:
+      summary: Print Shipment Labels in Bulk
+      description: Endpoint to print labels for multiple shipments in bulk in GNConnect.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                airwaybills:
+                  type: array
+                  items:
+                    type: string
+                  description: List of airwaybill numbers for which labels need to be printed.
+                labelFormat:
+                  type: string
+                  description: The format of the labels.
+                labelSize:
+                  type: string
+                  description: The size of the labels.
+                customerCode:
+                  type: string
+                  description: The code of the customer associated with the shipments.
+                branchCode:
+                  type: string
+                  description: The branch code associated with the shipments.
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      security:
+        - bearerAuth: []
+ 
+  /gnconnect/Manifest/CreateContainer:
+    post:
+      summary: Create Manifest Container
+      description: Endpoint to create a manifest container in GNConnect.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - airwaybillNumbers
+                - customerCode
+                - branchCode
+                - origin
+                - destination
+              properties:
+                customerCode:
+                  type: string
+                  maxLength: 20
+                  description: The code of the customer associated with the manifest container.
+                branchCode:
+                  type: string
+                  maxLength: 20
+                  description: The branch code associated with the manifest container.
+                origin:
+                  type: string
+                  maxLength: 3
+                  description: The origin of the manifest container.
+                destination:
+                  type: string
+                  maxLength: 3
+                  description: The destination of the manifest container.
+                clientReference:
+                  type: string
+                  description: The client reference for the manifest container.
+                truckNumber:
+                  type: string
+                  description: The truck number associated with the manifest container.
+                containerType:
+                  type: string
+                  description: The type of container.
+                airwaybillNumbers:
+                  type: array
+                  items:
+                    type: string
+                  description: List of airwaybill numbers included in the manifest container.
+                  minLength: 1
+                  example: ["AB12345678", "CD98765432"]
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+
+  /gnconnect/Manifest/AddShipmentsToContainer:
+    post:
+      summary: Add Shipments to Container
+      description: Endpoint to add shipments to a container in GNConnect manifest.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - customerCode
+                - branchCode
+                - airwaybillNumbers
+                - containerCode
+              properties:
+                customerCode:
+                  type: string
+                  maxLength: 20
+                  description: The code of the customer associated with the manifest container.
+                branchCode:
+                  type: string
+                  maxLength: 20
+                  description: The branch code associated with the manifest container.
+                airwaybillNumbers:
+                  type: array
+                  items:
+                    type: string
+                  description: List of airwaybill numbers to be added to the container.
+                  minLength: 1
+                containerCode:
+                  type: string
+                  maxLength: 50
+                  description: The code of the container to which shipments will be added.
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+  /gnconnect/Manifest/DeleteShipmentsFromContainer:
+    delete:
+      summary: Delete Shipments from Container
+      description: Endpoint to delete shipments from a container in GNConnect manifest.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - customerCode
+                - branchCode
+                - airwaybillNumbers
+                - containerCode
+              properties:
+                customerCode:
+                  type: string
+                  maxLength: 20
+                  description: The code of the customer associated with the manifest container.
+                branchCode:
+                  type: string
+                  maxLength: 20
+                  description: The branch code associated with the manifest container.
+                airwaybillNumbers:
+                  type: array
+                  items:
+                    type: string
+                  description: List of airwaybill numbers to be deleted from the container.
+                  minLength: 1
+                containerCode:
+                  type: string
+                  maxLength: 50
+                  description: The code of the container from which shipments will be deleted.
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+
+  /gnconnect/MasterAirWaybill/CreateMasterAirwwaybill:
+    post:
+      summary: Create Master Air Waybill
+      description: Endpoint to create a master air waybill in GNConnect.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - customerCode
+                - branchCode
+                - origin
+                - nextStop
+                - airlineCode
+                - airLineNumber
+                - departureDate
+                - arrivalDate
+                - flightNumber
+                - shippingTypeCode
+                - originAirportCode
+                - nextStopAirportCode
+                - mawbTotalWeight
+                - mawbChargeableWeight
+                - noOfPieces
+                - containers
+              properties:
+                customerCode:
+                  type: string
+                  maxLength: 20
+                  description: The code of the customer associated with the master air waybill.
+                branchCode:
+                  type: string
+                  maxLength: 20
+                  description: The branch code associated with the master air waybill.
+                origin:
+                  type: string
+                  maxLength: 3
+                  description: The origin of the master air waybill.
+                nextStop:
+                  type: string
+                  maxLength: 3
+                  description: The next stop of the master air waybill.
+                airlineCode:
+                  type: string
+                  maxLength: 10
+                  description: The code of the airline associated with the master air waybill.
+                airLineNumber:
+                  type: string
+                  maxLength: 20
+                  description: The line number of the airline associated with the master air waybill.
+                departureDate:
+                  type: string
+                  format: date
+                  minLength: 1
+                  description: The departure date of the master air waybill.
+                arrivalDate:
+                  type: string
+                  format: date
+                  minLength: 1
+                  description: The arrival date of the master air waybill.
+                flightNumber:
+                  type: string
+                  maxLength: 10
+                  description: The flight number associated with the master air waybill.
+                shippingTypeCode:
+                  type: string
+                  description: The shipping type code.
+                originAirportCode:
+                  type: string
+                  description: The code of the origin airport.
+                  maxLength: 3
+                nextStopAirportCode:
+                  type: string
+                  description: The code of the next stop airport.
+                  maxLength: 3
+                mawbTotalWeight:
+                  type: string
+                  description: The total weight of the master air waybill.
+                mawbChargeableWeight:
+                  type: string
+                  description: The chargeable weight of the master air waybill.
+                noOfPieces:
+                  type: string
+                  description: The number of pieces associated with the master air waybill.
+                containers:
+                  type: array
+                  description: List of container codes associated with the master air waybill.
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+
+  /gnconnect/MasterAirWaybill/CreateMasterAirwaybillByShipments:
+    post:
+      summary: Create Master Air Waybill by Shipments
+      description: Endpoint to create a master air waybill by shipments in GNConnect.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - branchCode
+                - origin
+                - nextStop
+                - airlineCode
+                - airLineNumber
+                - departureDate
+                - arrivalDate
+                - flightNumber
+                - shipmentAirwabillNumbers
+              properties:
+                customerCode:
+                  type: string
+                  maxLength: 20
+                  description: The code of the customer associated with the master air waybill.
+                branchCode:
+                  type: string
+                  maxLength: 20
+                  description: The branch code associated with the master air waybill.
+                origin:
+                  type: string
+                  maxLength: 3
+                  description: The origin of the master air waybill.
+                nextStop:
+                  type: string
+                  maxLength: 3
+                  description: The next stop of the master air waybill.
+                airlineCode:
+                  type: string
+                  maxLength: 10
+                  description: The code of the airline associated with the master air waybill.
+                airLineNumber:
+                  type: string
+                  maxLength: 20
+                  description: The line number of the airline associated with the master air waybill.
+                departureDate:
+                  type: string
+                  format: date
+                  minLength: 1
+                  description: The departure date of the master air waybill.
+                arrivalDate:
+                  type: string
+                  format: date
+                  minLength: 1
+                  description: The arrival date of the master air waybill.
+                flightNumber:
+                  type: string
+                  maxLength: 10
+                  description: The flight number associated with the master air waybill.
+                shippingTypeCode:
+                  type: string
+                  description: The shipping type code.
+                originAirportCode:
+                  type: string
+                  description: The code of the origin airport.
+                  maxLength: 3
+                nextStopAirportCode:
+                  type: string
+                  description: The code of the next stop airport.
+                  maxLength: 3
+                mawbTotalWeight:
+                  type: string
+                  description: The total weight of the master air waybill.
+                mawbChargeableWeight:
+                  type: string
+                  description: The chargeable weight of the master air waybill.
+                noOfPieces:
+                  type: string
+                  description: The number of pieces associated with the master air waybill.
+                shipmentAirwabillNumbers:
+                  type: array
+                  description: List of airwaybill numbers associated with the shipments.
+                  items:
+                    type: string
+                isFinalize:
+                  type: string
+                  description: Flag indicating whether the master air waybill is finalized.
+                Code:
+                  type: string
+                  description: The code associated with the master air waybill.
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+
+  /gnconnect/MasterAirWaybill/AddContainersToMasterAirwwaybill:
+    post:
+      summary: Add Containers to Master Air Waybill
+      description: Endpoint to add containers to a master air waybill in GNConnect.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - customerCode
+                - branchCode
+                - manifestCode
+                - masterAirwaybillCode
+              properties:
+                customerCode:
+                  type: string
+                  maxLength: 20
+                  description: The code of the customer associated with the master air waybill.
+                branchCode:
+                  type: string
+                  maxLength: 20
+                  description: The branch code associated with the master air waybill.
+                manifestCode:
+                  type: array
+                  items:
+                    type: string
+                  description: List of manifest codes to be added to the master air waybill.
+                  minLength: 1
+                masterAirwaybillCode:
+                  type: string
+                  maxLength: 50
+                  description: The code of the master air waybill to which containers will be added.
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+
+  /gnconnect/MasterAirWaybill/DeleteContainersFromMasterAirwwaybill:
+    delete:
+      summary: Delete Containers from Master Air Waybill
+      description: Endpoint to delete containers from a master air waybill in GNConnect.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - customerCode
+                - branchCode
+                - manifestCode
+                - masterAirwaybillCode
+              properties:
+                customerCode:
+                  type: string
+                  maxLength: 20
+                  description: The code of the customer associated with the master air waybill.
+                branchCode:
+                  type: string
+                  maxLength: 20
+                  description: The branch code associated with the master air waybill.
+                manifestCode:
+                  type: array
+                  items:
+                    type: string
+                  description: List of manifest codes to be deleted from the master air waybill.
+                  minLength: 1
+                masterAirwaybillCode:
+                  type: string
+                  maxLength: 50
+                  description: The code of the master air waybill from which containers will be deleted.
+      responses:
+        '200':
+          description: OK
+      security:
+        - bearerAuth: []
+
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+

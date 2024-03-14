@@ -1,0 +1,32 @@
+https://s10sc22m.sb-smartsheet.switchboard.versori.io
+  "scope": "sheet",
+  "version": 1
+
+
+
+module.exports = async function (ctx) {
+    const body = ctx.selectors("body");
+ 
+    let isChallengeExists = false;
+
+    if (body.challenge !== undefined) {
+        isChallengeExists = true;
+    }
+
+    return {
+        "isChallengeExists": isChallengeExists
+    };
+};
+
+
+
+  "properties": {
+    "isChallengeExists": {
+      "type": "boolean"
+    }
+  }
+
+
+Updates:
+1: Completed integration Webhook Management (Manual Trigger)
+2: Integration Smartsheet Project Update (Under progress 40%)

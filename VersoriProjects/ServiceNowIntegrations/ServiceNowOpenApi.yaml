@@ -1,0 +1,691 @@
+openapi: 3.0.0
+info:
+  title: ServiceNow Project Tasks API
+  version: 1.0.0
+servers:
+  - url: https://dev219276.service-now.com
+paths:
+ 
+  /api/now/table/{tableName}/{sys_id}:
+    put:
+      summary: Update the specified record in the table
+      security:
+        - basicAuth: []
+      description: >
+        Updates the specified record with the request body.
+      parameters:
+        - name: tableName
+          in: path
+          required: true
+          description: Name of the table where the record is located
+          schema:
+            type: string
+        - name: sys_id
+          in: path
+          required: true
+          description: Unique identifier of the record to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name-value pairs:
+                  type: object
+                  description: Name-value pairs for the field(s) to update in the associated table
+      responses:
+        '200':
+          description: Successful. The request was successfully processed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name-value pairs:
+                    type: object
+                    description: All fields (not just modified) with their associated values for the change request
+
+    patch:
+      summary: Update record in the specified table
+      description: Updates the specified record with the name-value pairs included in the request body.
+      security:
+        - basicAuth: []
+      parameters:
+        - name: tableName
+          in: path
+          required: true
+          description: Name of the table to update the record
+          schema:
+            type: string
+        - name: sys_id
+          in: path
+          required: true
+          description: Sys_id of the record to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: string
+                description: Dynamic properties for updating the record
+            example:
+              property1: 'value1'
+              property2: 'value2'
+              property3: 'value3'
+      responses:
+        '200':
+          description: Successful update
+
+    get:
+      summary: Retrieve Record by Sys_id
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: tableName
+          required: true
+          schema:
+            type: string
+          description: Name of the table from which to retrieve the record.
+        - in: path
+          name: sys_id
+          required: true
+          schema:
+            type: string
+          description: Sys_id of the record to retrieve.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      upon_approval:
+                        type: string
+                      location:
+                        type: object
+                        properties:
+                          link:
+                            type: string
+                          value:
+                            type: string
+                      expected_start:
+                        type: string
+                      reopen_count:
+                        type: string
+                      close_notes:
+                        type: string
+                      additional_assignee_list:
+                        type: string
+                      impact:
+                        type: string
+                      urgency:
+                        type: string
+                      correlation_id:
+                        type: string
+                      sys_tags:
+                        type: string
+                      sys_domain:
+                        type: object
+                        properties:
+                          link:
+                            type: string
+                          value:
+                            type: string
+                      description:
+                        type: string
+                      group_list:
+                        type: string
+                      priority:
+                        type: string
+                      delivery_plan:
+                        type: string
+                      sys_mod_count:
+                        type: string
+                      work_notes_list:
+                        type: string
+                      business_service:
+                        type: string
+                      follow_up:
+                        type: string
+                      closed_at:
+                        type: string
+                      sla_due:
+                        type: string
+                      delivery_task:
+                        type: string
+                      sys_updated_on:
+                        type: string
+                      parent:
+                        type: string
+                      work_end:
+                        type: string
+                      number:
+                        type: string
+                      closed_by:
+                        type: string
+                      work_start:
+                        type: string
+                      calendar_stc:
+                        type: string
+                      category:
+                        type: string
+                      business_duration:
+                        type: string
+                      incident_state:
+                        type: string
+                      activity_due:
+                        type: string
+                      correlation_display:
+                        type: string
+                      company:
+                        type: string
+                      active:
+                        type: string
+                      due_date:
+                        type: string
+                      assignment_group:
+                        type: object
+                        properties:
+                          link:
+                            type: string
+                          value:
+                            type: string
+                      caller_id:
+                        type: object
+                        properties:
+                          link:
+                            type: string
+                          value:
+                            type: string
+                      knowledge:
+                        type: string
+                      made_sla:
+                        type: string
+                      comments_and_work_notes:
+                        type: string
+                      parent_incident:
+                        type: string
+                      state:
+                        type: string
+                      user_input:
+                        type: string
+                      sys_created_on:
+                        type: string
+                      approval_set:
+                        type: string
+                      reassignment_count:
+                        type: string
+                      rfc:
+                        type: string
+                      child_incidents:
+                        type: string
+                      opened_at:
+                        type: string
+                      short_description:
+                        type: string
+                      order:
+                        type: string
+                      sys_updated_by:
+                        type: string
+                      resolved_by:
+                        type: string
+                      notify:
+                        type: string
+                      upon_reject:
+                        type: string
+                      approval_history:
+                        type: string
+                      problem_id:
+                        type: object
+                        properties:
+                          link:
+                            type: string
+                          value:
+                            type: string
+                      work_notes:
+                        type: string
+                      calendar_duration:
+                        type: string
+                      close_code:
+                        type: string
+                      sys_id:
+                        type: string
+                      approval:
+                        type: string
+                      caused_by:
+                        type: string
+                      severity:
+                        type: string
+                      sys_created_by:
+                        type: string
+                      resolved_at:
+                        type: string
+                      assigned_to:
+                        type: string
+                      business_stc:
+                        type: string
+                      wf_activity:
+                        type: string
+                      sys_domain_path:
+                        type: string
+                      cmdb_ci:
+                        type: object
+                        properties:
+                          link:
+                            type: string
+                          value:
+                            type: string
+                      opened_by:
+                        type: object
+                        properties:
+                          link:
+                            type: string
+                          value:
+                            type: string
+                      subcategory:
+                        type: string
+                      rejection_goto:
+                        type: string
+                      sys_class_name:
+                        type: string
+                      watch_list:
+                        type: string
+                      time_worked:
+                        type: string
+                      contact_type:
+                        type: string
+                      escalation:
+                        type: string
+                      comments:
+                        type: string
+
+  /api/now/table/{tableName}:
+    post:
+      summary: Insert a record in the specified table
+      description: >
+        Inserts one record in the specified table. Multiple record insertion is not supported by this method.
+      parameters:
+        - name: tableName
+          in: path
+          required: true
+          description: Name of the table to insert the record
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                active:
+                  type: boolean
+                  description: Whether the project is active or not.
+                risk:
+                  type: string
+                  description: The risk level of the project.
+                number:
+                  type: string
+                  description: The project number.
+                project_dashboard:
+                  type: object
+                  properties:
+                    link:
+                      type: string
+                      format: uri
+                      description: The link to the project dashboard.
+                    value:
+                      type: string
+                      description: The value of the project dashboard.
+                  description: Information about the project dashboard.
+                phase:
+                  type: string
+                  description: The current phase of the project.
+                client:
+                  type: string
+                  description: The client associated with the project.
+                sales_rep:
+                  type: string
+                  description: The sales representative for the project.
+                closed_at:
+                  type: string
+                  format: date
+                  description: The date when the project was closed.
+                short_description:
+                  type: string
+                  description: A short description of the project.
+                approval:
+                  type: string
+                  description: The approval status of the project.
+                start_date:
+                  type: string
+                  format: date
+                  description: The start date of the project.
+                end_date:
+                  type: string
+                  format: date
+                  description: The end date of the project.
+                project_type:
+                  type: string
+                  description: The type of the project.
+                resource_allocated_cost:
+                  type: string
+                  format: float
+                  description: The allocated cost for resources in the project.
+                time_worked:
+                  type: string
+                  format: float
+                  description: The time worked on the project.
+                remaining_duration:
+                  type: string
+                  format: float
+                  description: The remaining duration of the project.
+                budget_cost_project_currency:
+                  type: object
+                  properties:
+                    link:
+                      type: string
+                      format: uri
+                      description: The link to the budget cost in project currency.
+                    value:
+                      type: string
+                      description: The value of the budget cost in project currency.
+                  description: Information about the budget cost in project currency.
+                assigned_to:
+                  type: string
+                  description: The person assigned to the project.
+                manager:
+                  type: string
+                  description: The manager of the project.
+      responses:
+        '200':
+          description: Indicates that the request completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    description: Field names and values of all parameters within the newly created record or those specified in the query parameters
+                    properties:
+                      sys_id:
+                        type: string
+    get:
+      summary: Get records from a ServiceNow table
+      parameters:
+        - name: tableName
+          in: path
+          description: Name of the table from which to retrieve records (e.g., "problem")
+          required: true
+          schema:
+            type: string
+        - name: sysparm_limit
+          in: query
+          description: Maximum number of records to return
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        parent:
+                          type: string
+                        made_sla:
+                          type: string
+                        watch_list:
+                          type: string
+                        upon_reject:
+                          type: string
+                        sys_updated_on:
+                          type: string
+                        approval_history:
+                          type: string
+                        number:
+                          type: string
+                        sys_updated_by:
+                          type: string
+                        opened_by:
+                          type: object
+                          properties:
+                            link:
+                              type: string
+                            value:
+                              type: string
+                        user_input:
+                          type: string
+                        sys_created_on:
+                          type: string
+                        sys_domain:
+                          type: object
+                          properties:
+                            link:
+                              type: string
+                            value:
+                              type: string
+                        state:
+                          type: string
+                        sys_created_by:
+                          type: string
+                        knowledge:
+                          type: string
+                        order:
+                          type: string
+                        closed_at:
+                          type: string
+                        cmdb_ci:
+                          type: object
+                          properties:
+                            link:
+                              type: string
+                            value:
+                              type: string
+                        delivery_plan:
+                          type: string
+                        impact:
+                          type: string
+                        active:
+                          type: string
+                        work_notes_list:
+                          type: string
+                        business_service:
+                          type: string
+                        priority:
+                          type: string
+                        sys_domain_path:
+                          type: string
+                        time_worked:
+                          type: string
+                        expected_start:
+                          type: string
+                        rejection_goto:
+                          type: string
+                        opened_at:
+                          type: string
+                        business_duration:
+                          type: string
+                        group_list:
+                          type: string
+                        work_end:
+                          type: string
+                        approval_set:
+                          type: string
+                        wf_activity:
+                          type: string
+                        work_notes:
+                          type: string
+                        short_description:
+                          type: string
+                        correlation_display:
+                          type: string
+                        delivery_task:
+                          type: string
+                        work_start:
+                          type: string
+                        assignment_group:
+                          type: string
+                        additional_assignee_list:
+                          type: string
+                        description:
+                          type: string
+                        calendar_duration:
+                          type: string
+                        close_notes:
+                          type: string
+                        sys_class_name:
+                          type: string
+                        closed_by:
+                          type: string
+                        follow_up:
+                          type: string
+                        sys_id:
+                          type: string
+                        contact_type:
+                          type: string
+                        urgency:
+                          type: string
+                        company:
+                          type: string
+                        reassignment_count:
+                          type: string
+                        activity_due:
+                          type: string
+                        assigned_to:
+                          type: string
+                        comments:
+                          type: string
+                        approval:
+                          type: string
+                        sla_due:
+                          type: string
+                        comments_and_work_notes:
+                          type: string
+                        due_date:
+                          type: string
+                        sys_mod_count:
+                          type: string
+                        sys_tags:
+                          type: string
+                        escalation:
+                          type: string
+                        upon_approval:
+                          type: string
+                        correlation_id:
+                          type: string
+                        location:
+                          type: string
+      security:
+        - basicAuth: []
+
+  /api/now/ppm/insert_project_tasks:
+    post:
+      summary: Insert Project Tasks
+      description: Endpoint to insert tasks of a project 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start_date:
+                  type: string
+                  description: Start date and time in the format "YYYY-MM-DD HH:mm:ss"
+                end_date:
+                  type: string
+                  description: End date and time in the format "YYYY-MM-DD HH:mm:ss"
+                short_description:
+                  type: string
+                  description: Short description of the project
+                external_id:
+                  type: string
+                  description: External ID of the project
+                child_tasks:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      short_description:
+                        type: string
+                        description: Short description of the task
+                      external_id:
+                        type: string
+                        description: External ID of the task
+                      child_tasks:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            external_id:
+                              type: string
+                              description: External ID of the child task
+                            short_description:
+                              type: string
+                              description: Short description of the child task
+                          required:
+                            - external_id
+                            - short_description
+                      dependencies:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            external_id:
+                              type: string
+                              description: External ID of the dependent task
+                            lag:
+                              type: integer
+                              description: Lag time for the dependency
+                            type:
+                              type: string
+                              description: Type of dependency (e.g., "fs" for Finish to Start)
+                          required:
+                            - external_id
+                            - lag
+                            - type
+                  required:
+                    - short_description
+                    - external_id
+              required:
+                - start_date
+                - end_date
+                - short_description
+                - external_id
+      responses:
+        '200':
+          description: Successful response
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+      security:
+        - basicAuth: []
+
+
+
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic

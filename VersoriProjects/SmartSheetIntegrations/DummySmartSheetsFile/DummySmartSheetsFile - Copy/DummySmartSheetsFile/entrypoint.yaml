@@ -1,0 +1,55 @@
+openapi: 3.0.0
+info:
+  title: Fake API Server
+  version: 1.0.0
+
+servers:
+  - url: https://api.fakeapi.com
+    description: Fake API Server
+
+security:
+  - apiKey: []
+
+paths:
+  /trigger:
+    post:
+      operationId: Entrypoint_Listener
+      summary: Entrypoint Listener
+      responses:
+        "200":
+          description: OK
+
+      callbacks:
+        Trigger:
+          "{$request.query.queryUrl}":
+            post:
+              operationId: Trigger
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      properties:
+                        userId:
+                          type: string
+              responses:
+                "200":
+                  description: OK
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          userId:
+                            type: string
+
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: Authorization
+
+
+
+
+

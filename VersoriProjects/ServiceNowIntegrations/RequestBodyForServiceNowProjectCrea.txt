@@ -1,0 +1,109 @@
+RequestBodyForServiceNowProjectCreation
+
+Certainly! Here are the name-value pairs for the provided row:
+
+SmartSheets Column Names
+Provisioned: true
+At Risk: (no value provided)
+Project ID: DEMO:00159
+Project Dashboard: [QuantumQuest - Template Set](https://app.smartsheet.com/dashboards/P2CjrP5rGRrf4cmqR538grHhQwXVfM5RXpg8gPC1)
+Project Stage: Planning
+Client: TechSavvy Innovations
+Sales Rep: techsavvy.innovations@example.com
+Close Date: 2024-01-15
+Project Name: QuantumQuest
+Approval Status: Approved
+Start Date: 2024-01-15
+End Date: 2024-02-10
+Project Type: Software Development
+Available Hours: 120.0
+Hours Used: 75.0
+Hours Remaining: 25.0
+Contract Value: $75,000
+Assigned Consultant: (no value provided)
+Manager: manager1@example.com
+
+Corresponsing ServiceNow and SmartSheet Column:
+
+1: active -> Provisioned
+2: risk -> At risk
+3: number -> Project ID..
+4: project_dashboard -> Project Dashboard
+5: phase -> Project Stage..
+6: client -> Client..
+7: sales_rep -> Sales Rep..
+8: closed_at -> Close Date..
+9: short_description -> Project Name
+10: approval -> Approval Status
+11: start_date -> Start Date..
+12: end_date -> End Date..
+13: project_type -> Project Type..
+14: resource_allocated_cost -> Available Hours
+15: time_worked -> Hours Used
+16: remaining_duration -> Hours Remaining
+17: budget_cost_project_currency -> Contract Value
+18: assigned_to -> Assigned Consultant
+19: manager -> Manager
+
+
+
+rowId: 3407095058042756
+columnId: 1046512684453764
+
+
+rowIds:
+1718245197778820(1): project stage
+6221844825149316(2): project type
+2844145104621444(3): start date
+7347744731991940(4): End date
+5095944918306692(5): close date
+3407095058042756(6): client
+7910694685413252(7): Sales Rep
+5658894871728004(8): Project Id
+
+
+when getting the project tracker sheet:
+
+row 3: project id (cells(2))
+row 4: client -> Client (cells(2))
+row 5: sales_rep -> Sales Rep(cells(2))
+row 6: Project Lead (cells(2))
+row 7: closed_at -> Close Date(cells(2))
+row 8: start_date -> Start Date(cells(2))
+row 9: end_date -> End Date (cells(2))
+row 10: phase -> Project Stage(cells(2))
+row 11: project_type -> Project Type(cells(2))
+
+module.exports = async function (ctx) {
+    const body = ctx.selectors("body")
+    const rowBody = ctx.selectors("rowBody")
+    console.log(body.scopeObjectId)
+    return {
+        "scopeObjectId" : body.scopeObjectId,
+        "rowBody" : rowBody.id
+    }
+};
+{
+  "$id": "01HR7K49CJ3C8FC4TR0CPAE8KM",
+  "properties": {
+    "scopeObjectId": {
+      "type": "integer"
+    },
+    "rowId": {
+      "type": "integer"
+    }
+  }
+}
+
+
+Updates:
+1: Make Webhook Worked
+
+2: Worked On the Smartsheet Api Retrieving Sheets (Logic Creating and debugging using )
+
+1: Webhook Was giving issues while verification so solved that by using responder after the standup
+2: Then Created Logic (Workflow) to retrive sheet Id from the webhook response and tried to pass that as a parameter to the Get Sheets endpoint, but was getting error when picking value directly, debugged that by using code blocks and picking the same value it worked,
+3: Was able to successfully retrieve the sheet data and it was returning all the rows with the required data but there was another endpoint able to retrive directly the row, this was found when i saw that Webhook response contains the corresponding new row with id
+4: Working on retriving the specific row from smartsheets was getting error and debugging them
+
+

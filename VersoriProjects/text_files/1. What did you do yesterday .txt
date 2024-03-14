@@ -1,0 +1,19 @@
+1. What did you do yesterday? 
+Answer: Worked on Project Smartsheets Integration "ServiceNow Project Creation", worked on webhooks for that integration and finalized that then started working on integration "Webhook Manual Trigger", created some workflow for that, Got issues in the understanding of the project (Notified @Jamie about those in Jira), so worked on workflow without wasting time
+2. What are you plan to do today? 
+Still Working on workflow for at least one sheet, so once we got the solution of the problem (Many project sheets or single) we will update that workflow for multiple sheets
+3. Anything block you on the way?
+Yes the Full understanding of the "PROJECT TRACKER SHEET" and getting the its id from the hyperlink inside Intake sheet
+4. A predefined question? (plain text).
+
+
+
+
+Questions are(Webhook Manual Trigger):
+0:When fetching rows from intake sheet we get hyperlinks but those are not directed to the Project Tracker Sheet,  its a bit tricky to get the id of project tracker sheet using any reference, currently stucked on that, tried alot to find a solution but failed
+1: What's meant by demand?
+2: In integration 2 they’re saying, Get data from summary sheet “Intake Sheet“ and check Webhook is activated on Project Tracker sheet or not,  but we have already created and activated webhook on Project Tracker sheet in Integration One for Project Tracker sheet
+3: Are there gonna more then 1 Project tracker sheet?
+
+
+

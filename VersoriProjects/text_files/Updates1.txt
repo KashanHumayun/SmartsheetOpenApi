@@ -1,0 +1,6 @@
+Updates:
+Project: SmartSheets X ServiceNow
+1- Worked on Webhooks (It's confusing)
+2- Was able to retreive the challenge code from the webhook activation call after alot of changes 
+3- Still not able to create a logic for sending the challenge code in the response with 200
+(Basically the webhook activation demands when webhook sends payload, it should retrive the challenge code from the header or body then send it back with the code status 200, not able to create a logic for this)

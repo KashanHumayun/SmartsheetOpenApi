@@ -47,6 +47,47 @@ paths:
         '302':
           description: Redirect to authorization page
 
+  /2.0/sights:
+    get:
+      summary: Getting all dashboards
+      description: Getting all dashboards
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pageNumber:
+                    type: integer
+                  pageSize:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  totalCount:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        createdAt:
+                          type: string
+                          format: date-time
+                        modifiedAt:
+                          type: string
+                          format: date-time
+                        id:
+                          type: integer
+                        accessLevel:
+                          type: string
+                        permalink:
+                          type: string
+                        name:
+                          type: string
+
+
   /token:
     post:
       summary: Smartsheet OAuth Token Endpoint
@@ -97,7 +138,7 @@ paths:
       summary: Get a list of webhooks
       description: Getting a list of webhooks
       security:
-        - bearerAuth: []
+        - api_key: []
       responses:
         '200':
           description: Successful Response
@@ -176,7 +217,7 @@ paths:
       summary: Create a Webhook
       description: Endpoint for creating a webhook in Smartsheet
       security:
-        - bearerAuth: []
+        - api_key: []
       requestBody:
         content:
           application/json:
@@ -191,7 +232,6 @@ paths:
                 $ref: '#/components/schemas/WebhookResponse'
         '401':
           description: Unauthorized - Access token is missing or invalid
-  
   /2.0/webhooks/{webhookId}:
     get:
       summary: Getting a Webhook
@@ -202,9 +242,9 @@ paths:
           required: true
           description: The ID of the webhook
           schema:
-            type: integer
+            type: string
       security:
-        - bearerAuth: []
+        - api_key: []
       responses:
         '200':
           description: Successful response
@@ -217,7 +257,7 @@ paths:
     put:
       summary: Update Webhook
       security:
-        - bearerAuth: []
+        - api_key: []
       parameters:
         - name: webhookId
           in: path
@@ -239,12 +279,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/WebhookUpdateResponse'
         '404':
-          description: Unsuccessful response 
-
+          description: Unsuccessful response
     delete:
       summary: Delete Webhook
       security:
-        - bearerAuth: []
+        - api_key: []
 
       parameters:
         - name: webhookId
@@ -262,12 +301,11 @@ paths:
                 $ref: '#/components/schemas/DeleteWebhookResponse'
         '404':
           description: Unsuccessful response 
-
   /2.0/sheets/{sheetId}:
     get:
       summary: Get Sheet Details
       security:
-        - bearerAuth: []
+        - api_key: []
       parameters:
         - name: sheetId
           in: path
@@ -275,21 +313,6 @@ paths:
           description: The ID of the sheet
           schema:
             type: integer
-        - in: query
-          name: level
-          schema:
-            type: integer  # Replace with the appropriate type for level
-          description: The level parameter.
-        - in: query
-          name: include
-          schema:
-            type: string  # Replace with the appropriate type for include
-          description: The include parameter.
-        - in: query
-          name: accessApiLevel
-          schema:
-            type: number  # Replace with the appropriate type for accessApiLevel
-          description: The access API level parameter.
       responses:
         '200':
           description: Successful response
@@ -299,11 +322,11 @@ paths:
                 type: object
                 properties:
                   id:
-                    type: number
+                    type: integer
                   fromId:
-                    type: number
+                    type: integer
                   ownerId:
-                    type: number
+                    type: integer
                   accessLevel:
                     type: string
                     enum:
@@ -374,7 +397,7 @@ paths:
                   summary:
                     $ref: '#/components/schemas/Summary'
                   totalRowCount:
-                    type: number
+                    type: integer
                   userPermissions:
                     type: object
                     properties:
@@ -393,16 +416,17 @@ paths:
                       displaySummaryTasks:
                         type: boolean
                   version:
-                    type: number
+                    type: integer
                   workspace:
                     $ref: '#/components/schemas/Workspace'
         '404':
           description: Unsuccessful response 
-
   /2.0/sheets/{sheetId}/rows:
     put:
       description: Update Rows
       summary: Updating the rows in a specified sheet
+      security:
+        - api_key: []
       parameters:
         - in: path
           name: sheetId
@@ -420,14 +444,14 @@ paths:
                 type: object
                 properties:
                   id:
-                    type: integer
+                    type: string
                   cells:
                     type: array
                     items:
                       type: object
                       properties:
                         columnId:
-                          type: number
+                          type: integer
                         image:
                           type: object
                           properties:
@@ -444,6 +468,10 @@ paths:
                               type: string
                               enum:
                                 - MULTI_CONTACT
+                                - DATETIME
+                                - DURATION
+                                - DATE
+                                - CONTACT
                               required:
                                 - objectType
                             values:
@@ -464,13 +492,10 @@ paths:
                                     type: string
                       required:
                         - columnId
+                        - value
       responses:
         '200':
           description: Rows updated successfully
-
-
-
-
     post:
       description: Add New Row
       summary: Adding a new row to a given sheet
@@ -498,7 +523,7 @@ paths:
                       type: object
                       properties:
                         columnId:
-                          type: number
+                          type: integer
                         value:
                           type: string
                         strict:
@@ -508,26 +533,25 @@ paths:
           description: Row added Successfully
 
       security:
-        - bearerAuth: []
-      
+        - api_key: []
   /2.0/sheets/{sheetId}/rows/{rowId}:
     get:
       summary: get the specified Row
       security:
-        - bearerAuth: []
+        - api_key: []
       parameters:
         - in: path
           name: sheetId
           required: true
           schema:
-            type: number  # Replace with the appropriate type for sheetId
+            type: integer  # Replace with the appropriate type for sheetId
           description: The ID of the sheet containing the row.
           example: 123456789
         - in: path
           name: rowId
           required: true
           schema:
-            type: number  # Replace with the appropriate type for rowId
+            type: integer  # Replace with the appropriate type for rowId
           description: The ID of the row to retrieve.
           example: 987654321
       responses:
@@ -539,16 +563,16 @@ paths:
                 type: object
                 properties:
                   id:
-                    type: number
+                    type: integer
                     description: Row Id.
                     example: 123456789
                   sheetId:
-                    type: number
+                    type: integer
                     description: Parent sheet Id.
                     example: 987654321
                   rowNumber:
-                    type: number
-                    description: Row number within the sheet.
+                    type: integer
+                    description: Row integer within the sheet.
                     minimum: 1
                     example: 42
                   expanded:
@@ -560,41 +584,60 @@ paths:
                     items:
                       type: object
                       properties:
-                        columnId:
-                          type: number
-                          description: The Id of the column that the cell is located in.
-                          example: 111222333
-                        columnType:
-                          type: string
-                          description: Only returned if the include query string parameter contains columnType.
-                          example: "TEXT"
-                        value:
-                          type: string
-                          description: A string, number, or a Boolean value depending on the cell type and data.
-                          example: "Hello, World!"
-                        displayValue:
-                          type: string
-                          description: Visual representation of cell contents, as presented to the user in the UI.
-                          example: "Hello, World!"
-                        createdAt:
-                          type: string
-                          description: Date and time of cell creation.
-                          format: date-time
-                          example: "2022-02-26T12:34:56Z"
-                        modifiedAt:
-                          type: string
-                          description: Date and time of the last modification of the cell.
-                          format: date-time
-                          example: "2022-02-27T10:45:32Z"
-                required:
-                  - id
-                  - sheetId
-                  - rowNumber
-                  - expanded
-                  - cells
+                        cells:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              columnId:
+                                type: integer
+                                description: The Id of the column that the cell is located in.
+                              columnType:
+                                type: string
+                                description: Only returned if the include query string parameter contains columnType.
+                              value:
+                                type: string
+                                description: A string, integer, or a Boolean value depending on the cell type and data.
+                              displayValue:
+                                type: string
+                                description: Visual representation of cell contents, as presented to the user in the UI.
+                              createdAt:
+                                type: string
+                                format: date-time
+                                description: Date and time of cell creation.
+                              modifiedAt:
+                                type: string
+                                format: date-time
+                                description: Date and time of the last modification of the cell.
+                              hyperlink:
+                                type: object
+                                properties:
+                                  url:
+                                    type: string
+                                    description: The URL associated with the hyperlink.
+                              linksOutToCells:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    status:
+                                      type: string
+                                      description: The status of the link.
+                                    sheetId:
+                                      type: integer
+                                      description: The Id of the linked sheet.
+                                    rowId:
+                                      type: integer
+                                      description: The Id of the linked row.
+                                    columnId:
+                                      type: integer
+                                      description: The Id of the linked column.
+                                    sheetName:
+                                      type: string
+                                      description: The name of the linked sheet.
+
         '404':
           description: Unsuccessful response 
-
   /2.0/sheets:
     get:
       summary: Getting list of all sheets that user has access to.
@@ -653,7 +696,8 @@ paths:
                               type: string
         '404':
           description: Unsuccessful response 
-
+  
+ 
 
 components:
   schemas:
@@ -661,7 +705,7 @@ components:
       type: object
       properties:
         id:
-          type: number
+          type: integer
         contactOptions:
           type: array
           items:
@@ -681,7 +725,7 @@ components:
         image:
           type: object
         index:
-          type: number
+          type: integer
         locked:
           type: boolean
         lockedForUser:
@@ -727,7 +771,7 @@ components:
       type: object
       properties:
         id:
-          type: number
+          type: integer
         name:
           type: string
         accessLevel:
@@ -745,7 +789,7 @@ components:
       type: object
       properties:
         id:
-          type: number
+          type: integer
         type:
           type: string
           enum:
@@ -759,9 +803,9 @@ components:
         type: object
         properties:
           id:
-            type: number
+            type: integer
           originalId:
-            type: number
+            type: integer
           name:
             type: string
           proofType:
@@ -775,7 +819,7 @@ components:
           proofRequestUrl:
             type: string
           version:
-            type: number
+            type: integer
           lastUpdatedAt:
             type: string
           lastUpdatedBy:
@@ -790,7 +834,7 @@ components:
       type: object
       properties:
         columnId:
-          type: number
+          type: integer
         columnType:
           type: string
         conditionalFormat:
@@ -803,11 +847,11 @@ components:
           type: object
           properties:
             reportId:
-              type: number
+              type: integer
             sheetId:
-              type: number
+              type: integer
             sightId:
-              type: number
+              type: integer
             url:
               type: string
         image:
@@ -816,20 +860,20 @@ components:
             altText:
               type: string
             height:
-              type: number
+              type: integer
             id:
               type: string
             width:
-              type: number
+              type: integer
         linkInFromCell:
           type: object
           properties:
             columnId:
-              type: number
+              type: integer
             rowId:
-              type: number
+              type: integer
             sheetId:
-              type: number
+              type: integer
             sheetName:
               type: string
             status:
@@ -849,11 +893,11 @@ components:
             type: object
             properties:
               columnId:
-                type: number
+                type: integer
               rowId:
-                type: number
+                type: integer
               sheetId:
-                type: number
+                type: integer
               sheetName:
                 type: string
               status:
@@ -894,9 +938,9 @@ components:
       type: object
       properties:
         id:
-          type: number
+          type: integer
         sheetId:
-          type: number
+          type: integer
         accessLevel:
           type: string
           enum:
@@ -911,9 +955,13 @@ components:
           items:
             $ref: '#/components/schemas/DiscussionAttachment'
         cells:
-          $ref: '#/components/schemas/Cells'
+          type: array
+          items:
+            $ref: '#/components/schemas/Cells'
         columns:
-          $ref: '#/components/schemas/Column'
+          type: array
+          items:
+            $ref: '#/components/schemas/Column'
         conditionalFormat:
           type: string
         createdAt:
@@ -945,16 +993,16 @@ components:
         permaLink:
           type: string
         rowNumber:
-          type: number
+          type: integer
         version:
-          type: number
+          type: integer
     DiscussionCommentAttachment:
       type: object
       properties:
         id:
-          type: number
+          type: integer
         parentId:
-          type: number
+          type: integer
         attachmentType:
           type: string
           enum:
@@ -992,16 +1040,16 @@ components:
         name:
           type: string
         sizeInKb:
-          type: number
+          type: integer
         url:
           type: string
         urlExpiresInMillis:
-          type: number
+          type: integer
     ProjectSettings:
       type: object
       properties:
         lengthOfDay:
-          type: number
+          type: integer
           minimum: 1
           maximum: 24
         nonWorkingDays:
@@ -1025,7 +1073,7 @@ components:
       type: object
       properties:
         id:
-          type: number
+          type: integer
         modifiedAt:
           type: string
           format: date-time
@@ -1034,7 +1082,7 @@ components:
         createdBy:
           $ref: '#/components/schemas/User'
         discussionId:
-          type: number
+          type: integer
         discussionCommentAttachments:
           type: array
           items:
@@ -1046,9 +1094,9 @@ components:
       type: object
       properties:
         id:
-          type: number
+          type: integer
         parentId:
-          type: number
+          type: integer
         attachmentType:
           type: string
           enum:
@@ -1086,11 +1134,11 @@ components:
         name:
           type: string
         sizeInKb:
-          type: number
+          type: integer
         url:
           type: string
         urlExpiresInMillis:
-          type: number
+          type: integer
     User:
       type: object
       properties:
@@ -1112,7 +1160,7 @@ components:
             - OWNER
             - VIEWER
         id:
-          type: number
+          type: integer
         comments:
           type: array
           items:
@@ -1124,14 +1172,14 @@ components:
         createdBy:
           $ref: '#/components/schemas/User'
         commentCount:
-          type: number
+          type: integer
         lastCommentedAt:
           type: string
           format: date-time
         lastCommentedUser:
           $ref: '#/components/schemas/User'
         parentId:
-          type: number
+          type: integer
         parentType:
           type: string
           enum:
@@ -1145,22 +1193,22 @@ components:
       type: object
       properties:
         endColumnId:
-          type: number
+          type: integer
           description: "Defines ending edge of range when specifying one or more columns. To specify an entire column, omit the startRowId and endRowId parameters."
         endRowId:
-          type: number
+          type: integer
           description: "Defines ending edge of range when specifying one or more rows. To specify an entire row, omit the startColumnId and endColumnId parameters."
         id:
-          type: number
+          type: integer
           description: "Cross-sheet reference Id, guaranteed unique within referencing sheet."
         name:
           type: string
           description: "Friendly name of reference. Auto-generated unless specified in Create Cross-sheet References."
         startColumnId:
-          type: number
+          type: integer
           description: "Defines beginning edge of range when specifying one or more columns. To specify an entire column, omit the startRowId and endRowId parameters."
         startRowId:
-          type: number
+          type: integer
           description: "Defines beginning edge of range when specifying one or more rows. To specify an entire row, omit the startColumnId and endColumnId parameters."
         status:
           type: string
@@ -1174,7 +1222,7 @@ components:
             - OK
           description: "Status of request."
         sourceSheetId:
-          type: number
+          type: integer
           description: "Sheet Id of source sheet."
     CrossSheetReferences:
       type: array
@@ -1191,8 +1239,8 @@ components:
           type: string
           description: "The prefix. Can include the date tokens: {DD} {MM} {YY} {YYYY}"
         startingNumber:
-          type: number
-          description: "The starting number for the auto-id."
+          type: integer
+          description: "The starting integer for the auto-id."
         suffix:
           type: string
           description: "The suffix. Can include the date tokens: {DD} {MM} {YY} {YYYY}"
@@ -1235,11 +1283,11 @@ components:
           type: boolean
           description: "Indicates whether the column is hidden."
         id:
-          type: number
+          type: integer
           description: "Column Id."
         index:
-          type: number
-          description: "Column index or position. This number is zero-based."
+          type: integer
+          description: "Column index or position. This integer is zero-based."
         locked:
           type: boolean
           description: "Indicates whether the column is locked. In a response, a value of true indicates that the column has been locked by the sheet owner or the admin."
@@ -1306,23 +1354,23 @@ components:
           type: boolean
           description: "Indicates whether validation has been enabled for the column (value = true)."
         version:
-          type: number
+          type: integer
           enum: [0, 1, 2]
           description: "0: CONTACT_LIST, PICKLIST, or TEXT_NUMBER. 1: MULTI_CONTACT_LIST. 2: MULTI_PICKLIST."
         width:
-          type: number
+          type: integer
           description: "Display width of the column in pixels."
     SheetResponse:
       type: object
       properties:
         id:
-          type: number
+          type: integer
           description: Sheet Id
         fromId:
-          type: number
+          type: integer
           description: The Id of the template from which to create the sheet. This attribute can be specified in a request, but is never present in a response.
         ownerId:
-          type: number
+          type: integer
           description: User Id of the sheet owner.
         accessLevel:
           type: string
@@ -1337,10 +1385,10 @@ components:
       type: object
       properties:
         id:
-          type: number
+          type: integer
           description: Attachment Id
         parentId:
-          type: number
+          type: integer
           description: The Id of the parent.
         attachmentType:
           type: string
@@ -1358,10 +1406,8 @@ components:
           enum: ["COMMENT", "PROOF", "ROW", "SHEET"]
           description: The type of object the attachment belongs to.
         createdAt:
-          oneOf:
-            - type: string
-              format: date-time
-            - type: number
+          type: string
+          format: date-time
           description: Timestamp or string when the attachment was created.
         createdBy:
           $ref: '#/components/schemas/User'
@@ -1369,13 +1415,13 @@ components:
           type: string
           description: Attachment name.
         sizeInKb:
-          type: number
+          type: integer
           description: The size of the file, if the attachmentType is FILE.
         url:
           type: string
           description: Attachment temporary URL (files only).
         urlExpiresInMillis:
-          type: number
+          type: integer
           description: Attachment temporary URL time to live (files only).
     DeleteWebhookResponse:
       type: object
@@ -1563,13 +1609,7 @@ components:
               type: array
               items:
                 type: string
-      required:
-        - name
-        - callbackUrl
-        - scope
-        - scopeObjectId
-        - events
-        - version
+  
     WebhookResponse:
       type: object
       properties:
@@ -1615,7 +1655,7 @@ components:
             id:
               type: integer
             apiClientId:
-              type: integer
+              type: string
             scopeObjectId:
               type: integer
             apiClientName:
@@ -1667,3 +1707,7 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
+    api_key:
+      type: apiKey
+      in: header  # or query, depending on how you want to pass the API key
+      name: Authorization  # the name of the header or query parameter

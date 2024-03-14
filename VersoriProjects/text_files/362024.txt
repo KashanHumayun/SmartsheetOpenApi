@@ -1,0 +1,7 @@
+3/6/2024:
+Updates:
+1:Iintegration created workflow for smartseet to create a project after getting data from the Project Tracker sheet
+
+2: Was asked to remove codeblock and change the type to integer from number and check if all the integeration works but it didnt so make it worked using code block again
+
+3:

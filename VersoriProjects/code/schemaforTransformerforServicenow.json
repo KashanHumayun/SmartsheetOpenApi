@@ -1,0 +1,84 @@
+{
+    "$id": "01HR6XC40PBT2MERRWMSH67BSR",
+    "properties": {
+      "active": {
+        "type": "boolean"
+      },
+      "risk": {
+        "type": "string"
+      },
+      "number": {
+        "type": "string"
+      },
+      "project_dashboard": {
+        "type": "object",
+        "properties": {
+          "link": {
+            "type": "string",
+            "format": "uri",
+            "description": "The link to the project dashboard."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the project dashboard."
+          }
+        }
+      },
+      "phase": {
+        "type": "string"
+      },
+      "client": {
+        "type": "string"
+      },
+      "sales_rep": {
+        "type": "string"
+      },
+      "closed_at": {
+        "type": "string"
+      },
+      "short_description": {
+        "type": "string"
+      },
+      "approval": {
+        "type": "string"
+      },
+      "start_date": {
+        "type": "string"
+      },
+      "end_date": {
+        "type": "string"
+      },
+      "project_type": {
+        "type": "string"
+      },
+      "resource_allocated_cost": {
+        "type": "string"
+      },
+      "time_worked": {
+        "type": "string"
+      },
+      "remaining_duration": {
+        "type": "string"
+      },
+      "budget_cost_project_currency": {
+        "type": "object",
+        "properties": {
+          "link": {
+            "type": "string",
+            "format": "uri",
+            "description": "The link to the project dashboard."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the project dashboard."
+          }
+        }
+      },
+      "assigned_to": {
+        "type": "string"
+      },
+      "manager": {
+        "type": "string"
+      }
+    }
+  }

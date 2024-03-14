@@ -1,0 +1,254 @@
+
+openapi: 3.0.0
+info:
+  title: Smartsheet OAuth 2.0 API
+  version: 1.0.0
+  description: OAuth 2.0 authentication for Smartsheet API
+
+servers:
+  - url: https://api.smartsheet.com
+
+paths:  
+  /2.0/webhooks:
+    post:
+      summary: Create a Webhook
+      description: Endpoint for creating a webhook in Smartsheet
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    webhookId:
+                      type: integer
+                      description: Id of the corresponding webhook.
+                    challenge:
+                      type: string
+                      description: Challenge value received from Smartsheet.
+                scopeObjectId:
+                  type: integer
+                  description: Id of the object that corresponds to scope.
+                webhookId:
+                  type: integer
+                  description: Id of the corresponding webhook.
+                events:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: Id of the object that corresponds to objectType. Omitted if objectType is cell.
+                      columnId:
+                        type: integer
+                        nullable: true
+                        description: Only present if objectType is cell. The Id of the column where the cell is located.
+                      rowId:
+                        type: integer
+                        nullable: true
+                        description: Only present if objectType is cell. The Id of the row where the cell is located.
+                      userId:
+                        type: integer
+                        description: The user Id of the person who caused this event.
+                      objectType:
+                        type: string
+                        enum:
+                          - attachment
+                          - cell
+                          - column
+                          - comment
+                          - discussion
+                          - row
+                          - sheet
+                        description: Type of object for which the event occurred.
+                      changeAgent:
+                        type: string
+                        description: A comma-delimited list of values that uniquely identify the agents responsible for making the changes that caused the callback to occur.
+                      timestamp:
+                        type: string
+                        format: date-time
+                        description: Time that this event occurred.
+                timestamp:
+                  type: string
+                  format: date-time
+                  description: Time that the callback was generated.
+                newWebhookStatus:
+                  type: string
+                  description: New status of the corresponding webhook. Only returned for webhook status change callbacks (null for event callbacks).
+                nonce:
+                  type: string
+                  description: Random value that is distinct for each callback.
+                scope:
+                  type: string
+                  description: Scope of the webhook. Currently, the only supported value is sheet.
+                  enum:
+                    - sheet
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  scopeObjectId:
+                    type: integer
+                    description: Id of the object that corresponds to scope.
+                  webhookId:
+                    type: integer
+                    description: Id of the corresponding webhook.
+                  events:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Id of the object that corresponds to objectType. Omitted if objectType is cell.
+                        columnId:
+                          type: integer
+                          nullable: true
+                          description: Only present if objectType is cell. The Id of the column where the cell is located.
+                        rowId:
+                          type: integer
+                          nullable: true
+                          description: Only present if objectType is cell. The Id of the row where the cell is located.
+                        userId:
+                          type: integer
+                          description: The user Id of the person who caused this event.
+                        objectType:
+                          type: string
+                          enum:
+                            - attachment
+                            - cell
+                            - column
+                            - comment
+                            - discussion
+                            - row
+                            - sheet
+                          description: Type of object for which the event occurred.
+                        changeAgent:
+                          type: string
+                          description: A comma-delimited list of values that uniquely identify the agents responsible for making the changes that caused the callback to occur.
+                        eventType:
+                          type: string
+                          enum:
+                            - created
+                            - deleted
+                            - updated
+                          description: Type of Event that occurred.
+                        timestamp:
+                          type: string
+                          format: date-time
+                          description: Time that this event occurred.
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: Time that the callback was generated.
+                  newWebhookStatus:
+                    type: string
+                    description: New status of the corresponding webhook. Only returned for webhook status change callbacks (null for event callbacks).
+                  nonce:
+                    type: string
+                    description: Random value that is distinct for each callback.
+                  scope:
+                    type: string
+                    description: Scope of the webhook. Currently, the only supported value is sheet.
+                    enum:
+                      - sheet
+      callbacks:
+        smartSheetCallback:
+          '{$request.query.queryUrl}':
+            post:
+              operationId: SmartSheetWebhookResult
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                        properties:
+                          scopeObjectId:
+                            type: integer
+                            description: Id of the object that corresponds to scope.
+                          challenge:
+                            type: string
+                            description: Challenge value received from Smartsheet.
+                          webhookId:
+                            type: integer
+                            description: Id of the corresponding webhook.
+                          events:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                  description: Id of the object that corresponds to objectType. Omitted if objectType is cell.
+                                columnId:
+                                  type: integer
+                                  nullable: true
+                                  description: Only present if objectType is cell. The Id of the column where the cell is located.
+                                rowId:
+                                  type: integer
+                                  nullable: true
+                                  description: Only present if objectType is cell. The Id of the row where the cell is located.
+                                userId:
+                                  type: integer
+                                  description: The user Id of the person who caused this event.
+                                objectType:
+                                  type: string
+                                  enum:
+                                    - attachment
+                                    - cell
+                                    - column
+                                    - comment
+                                    - discussion
+                                    - row
+                                    - sheet
+                                  description: Type of object for which the event occurred.
+                                changeAgent:
+                                  type: string
+                                  description: A comma-delimited list of values that uniquely identify the agents responsible for making the changes that caused the callback to occur.
+                                eventType:
+                                  type: string
+                                  enum:
+                                    - created
+                                    - deleted
+                                    - updated
+                                  description: Type of Event that occurred.
+                                timestamp:
+                                  type: string
+                                  format: date-time
+                                  description: Time that this event occurred.
+                          timestamp:
+                            type: string
+                            format: date-time
+                            description: Time that the callback was generated.
+                          newWebhookStatus:
+                            type: string
+                            description: New status of the corresponding webhook. Only returned for webhook status change callbacks (null for event callbacks).
+                          nonce:
+                            type: string
+                            description: Random value that is distinct for each callback.
+                          scope:
+                            type: string
+                            description: Scope of the webhook. Currently, the only supported value is sheet.
+                            enum:
+                              - sheet
+                          smartsheethookchallenge:
+                            type: string
+              responses:
+                '200':
+                  description: OK
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          smartsheetHookResponse:
+                            type: string
+                            description: Unique value to identify webhook

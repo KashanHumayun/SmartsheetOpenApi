@@ -1,0 +1,28 @@
+webhook body to send run once:
+{
+  "scopeObjectId": 1327138447773572,
+  "webhookId": 8444254503626628,
+  "events": [
+    {
+      "id": 4106159482113924,
+      "columnId": 0,
+      "rowid": 0,
+      "userid": 48569348493401210,
+      "objectType": "row",
+      "changeAgent": "string",
+      "eventType": "created",
+      "timestamp": "2019-08-24T14:15:22Z"
+    }
+  ],
+  "newWebhookStatus": "ENABLED",
+  "nonce": "string",
+  "scope": "sheet",
+  "timestamp": "2019-08-24T14:15:22Z"
+}
+
+When Getting and responding webhooks the schema we get inside transformer and responder is:
+1 : on the right side we get CallBack Response Schema
+2 : on the left side we get CallBack request body
+
+When running once like publishing:
+1: The requestbody schema we get is of the path
