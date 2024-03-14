@@ -1,0 +1,64 @@
+dhl:
+{
+  "refNo": "{{refNo}}",
+  "refNo2": "",
+  "eCommerce": false,
+  "shipperName": "Cahit Tosyalı",
+  "shipperAddress": "75. yıl mah. Gündoğdu san. sit.- 11253. sk c blok no:20",
+  "shipperPostalCode": "26250",
+  "shipperDistrict": "Merkez",
+  "shipperCity": "Istanbul",
+  "shipperCountry": "TR",
+  "shipperTaxId": "50897174745",
+  "shipperPhone": "+902126785845",
+  "shipperEMail": "cahit.tosyali@dhl.com",
+  "consigneeName": "Richard Zwieg",
+  "consigneeAddress": "Trilluper Weg 70b",
+  "consigneePostalCode": "1234 AB",
+  "consigneeDistrict": "Amsterdam",
+  "consigneeCity": "Amsterdam",
+  "consigneeCountry": "NL",
+  "consigneePhone": "",
+  "consigneeEMail": "richard.zweig@gmail.com",
+  "packageType": "BI",
+  "packageCount": 1,
+  "width": 16,
+  "length": 36,
+  "height": 11,
+  "incoterm": "DDU",
+  "deliveryPlace": "trilluper Weg 10b",
+  "invoiceNumber": "",
+  "invoiceCurrency": "USD",
+  "freightAmount": 2.61,
+  "freightCurrency": "EUR",
+  "insuranceAmount": 0,
+  "insuranceCurrency": "",
+  "atrNumber": "",
+  "IOSS": "",
+  "details": [
+    {
+      "hsCode": "94.033.011",
+      "commercialDescription": "Office Desk accessory, wooden table orga_x0002_nizer, workplace or_x0002_ganization",
+      "invoiceAmount": 0,
+      "quantity": 1,
+      "weight": 1,
+      "countryOfOrigin": ""
+    },
+    {
+      "hsCode": "57049",
+      "commercialDescription": "Premium Wool Felt desk mats/desk pads, non slip, writing pad",
+      "invoiceAmount": 100,
+      "quantity": 1,
+      "weight": 0,
+      "countryOfOrigin": ""
+    },
+    {
+      "hsCode": "94.033.011",
+      "commercialDescription": "Wooden Laptop Mac_x0002_Book Stand, Er_x0002_gonomic Computer Holder,",
+      "invoiceAmount": 0,
+      "quantity": 1,
+      "weight": 0,
+      "countryOfOrigin": ""
+    }
+  ]
+}

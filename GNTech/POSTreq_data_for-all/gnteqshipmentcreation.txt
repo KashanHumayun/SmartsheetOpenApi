@@ -1,0 +1,98 @@
+gnteq:
+[
+  {
+    "shipper": {
+      "shipperAddress": {
+        "countryCode": "string",
+        "city": "string",
+        "line1": "string",
+        "line2": "string",
+        "line3": "string",
+        "postCode": "string",
+        "longitude": "string",
+        "latitude": "string",
+        "locationCode1": "string",
+        "locationCode2": "string",
+        "locationCode3": "string"
+      },
+      "shipperContact": {
+        "personName": "string",
+        "companyName": "string",
+        "phoneNumber1": "string",
+        "phoneNumber2": "string",
+        "cellPhone": "string",
+        "emailAddress": "string",
+        "type": "string"
+      }
+    },
+    "consignee": {
+      "consigneeAddress": {
+        "countryCode": "string",
+        "city": "string",
+        "district": "string",
+        "line1": "string",
+        "line2": "string",
+        "line3": "string",
+        "postCode": "string",
+        "longitude": "string",
+        "latitude": "string",
+        "locationCode1": "string",
+        "locationCode2": "string",
+        "locationCode3": "string"
+      },
+      "consigneeContact": {
+        "personName": "string",
+        "companyName": "string",
+        "phoneNumber1": "string",
+        "phoneNumber2": "string",
+        "cellPhone": "string",
+        "emailAddress": "string",
+        "type": "string",
+        "civilId": "string"
+      }
+    },
+    "customerCode": "string",
+    "branchCode": "string",
+    "shippingDateTime": "2024-03-14",
+    "descriptionOfGoods": "string",
+    "numberOfPieces": "str",
+    "customsDeclaredValue": "string",
+    "customsDeclaredValueCurrency": "str",
+    "productType": "str",
+    "supplierCode": "GnTeq",
+    "items": [
+      {
+        "quantity": "string",
+        "weight": {
+          "unit": "string",
+          "value": "string"
+        },
+        "customsValue": {
+          "currencyCode": "string",
+          "value": "string"
+        },
+        "comments": "string",
+        "reference": "string",
+        "commodityCode": "string",
+        "goodsDescription": "string",
+        "countryOfOrigin": "string",
+        "packageType": "string",
+        "containsDangerousGoods": "string"
+      }
+    ],
+    "shipmentWeight": {
+      "value": "string",
+      "weightUnit": "string",
+      "length": "string",
+      "width": "string",
+      "height": "string",
+      "dimensionUnit": "string"
+    },
+    "reference": {
+      "shipperReference1": "string",
+      "shipperNote1": "string"
+    },
+    "includeLabel": "string",
+    "includeOfficeDetails": "string"
+  }
+]

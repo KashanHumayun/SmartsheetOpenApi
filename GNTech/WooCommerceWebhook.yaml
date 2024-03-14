@@ -1,0 +1,475 @@
+openapi: 3.0.0
+info:
+  title: WooCommerce Order Webhook Response
+  version: 1.0.0
+servers:
+  - url: https://your-wordpress-site.com/wp-json/wc/v3/  
+
+paths:
+  /webhook:
+    post:
+      summary: Webhook Endpoint
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                  properties:
+                    WebhookPayload:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        parent_id:
+                          type: integer
+                        number:
+                          type: string
+                        order_key:
+                          type: string
+                        created_via:
+                          type: string
+                        version:
+                          type: string
+                        status:
+                          type: string
+                        currency:
+                          type: string
+                        date_created:
+                          type: string
+                          format: date-time
+                        date_created_gmt:
+                          type: string
+                          format: date-time
+                        date_modified:
+                          type: string
+                          format: date-time
+                        date_modified_gmt:
+                          type: string
+                          format: date-time
+                        discount_total:
+                          type: string
+                        discount_tax:
+                          type: string
+                        shipping_total:
+                          type: string
+                        shipping_tax:
+                          type: string
+                        cart_tax:
+                          type: string
+                        total:
+                          type: string
+                        total_tax:
+                          type: string
+                        prices_include_tax:
+                          type: boolean
+                        customer_id:
+                          type: integer
+                        customer_ip_address:
+                          type: string
+                        customer_user_agent:
+                          type: string
+                        customer_note:
+                          type: string
+                        billing:
+                          type: object
+                          properties:
+                            first_name:
+                              type: string
+                            last_name:
+                              type: string
+                            company:
+                              type: string
+                            address_1:
+                              type: string
+                            address_2:
+                              type: string
+                            city:
+                              type: string
+                            state:
+                              type: string
+                            postcode:
+                              type: string
+                            country:
+                              type: string
+                            email:
+                              type: string
+                              format: email
+                            phone:
+                              type: string
+                        shipping:
+                          type: object
+                          properties:
+                            first_name:
+                              type: string
+                            last_name:
+                              type: string
+                            company:
+                              type: string
+                            address_1:
+                              type: string
+                            address_2:
+                              type: string
+                            city:
+                              type: string
+                            state:
+                              type: string
+                            postcode:
+                              type: string
+                            country:
+                              type: string
+                            email:
+                              type: string
+                              format: email
+                            phone:
+                              type: string
+                        payment_method:
+                          type: string
+                        payment_method_title:
+                          type: string
+                        transaction_id:
+                          type: string
+                        date_paid:
+                          type: string
+                          format: date-time
+                        date_paid_gmt:
+                          type: string
+                          format: date-time
+                        date_completed:
+                          type: string
+                          format: date-time
+                        date_completed_gmt:
+                          type: string
+                          format: date-time
+                        cart_hash:
+                          type: string
+                        meta_data:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              key:
+                                type: string
+                              value:
+                                type: string
+                        line_items:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              name:
+                                type: string
+                              product_id:
+                                type: integer
+                              variation_id:
+                                type: integer
+                              quantity:
+                                type: integer
+                              tax_class:
+                                type: string
+                              subtotal:
+                                type: string
+                              subtotal_tax:
+                                type: string
+                              total:
+                                type: string
+                              total_tax:
+                                type: string
+                              sku:
+                                type: string
+                              price:
+                                type: integer
+                              meta_data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: integer
+                                    key:
+                                      type: string
+                                    value:
+                                      type: string
+                        tax_lines:
+                          type: array
+                          items: {}
+                        shipping_lines:
+                          type: array
+                          items: {}
+                        fee_lines:
+                          type: array
+                          items: {}
+                        coupon_lines:
+                          type: array
+                          items: {}
+                        refunds:
+                          type: array
+                          items: {}
+                        _links:
+                          type: object
+                          properties:
+                            self:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  href:
+                                    type: string
+                            collection:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  href:
+                                    type: string
+                            customer:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  href:
+                                    type: string
+
+      callbacks:
+        WooCommerceCallback:
+          '{$request.query.queryUrl}':
+            post:
+              operationId: WooCommerceWebhookResult
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                        properties:
+                          WebhookPayload:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              parent_id:
+                                type: integer
+                              number:
+                                type: string
+                              order_key:
+                                type: string
+                              created_via:
+                                type: string
+                              version:
+                                type: string
+                              status:
+                                type: string
+                              currency:
+                                type: string
+                              date_created:
+                                type: string
+                                format: date-time
+                              date_created_gmt:
+                                type: string
+                                format: date-time
+                              date_modified:
+                                type: string
+                                format: date-time
+                              date_modified_gmt:
+                                type: string
+                                format: date-time
+                              discount_total:
+                                type: string
+                              discount_tax:
+                                type: string
+                              shipping_total:
+                                type: string
+                              shipping_tax:
+                                type: string
+                              cart_tax:
+                                type: string
+                              total:
+                                type: string
+                              total_tax:
+                                type: string
+                              prices_include_tax:
+                                type: boolean
+                              customer_id:
+                                type: integer
+                              customer_ip_address:
+                                type: string
+                              customer_user_agent:
+                                type: string
+                              customer_note:
+                                type: string
+                              billing:
+                                type: object
+                                properties:
+                                  first_name:
+                                    type: string
+                                  last_name:
+                                    type: string
+                                  company:
+                                    type: string
+                                  address_1:
+                                    type: string
+                                  address_2:
+                                    type: string
+                                  city:
+                                    type: string
+                                  state:
+                                    type: string
+                                  postcode:
+                                    type: string
+                                  country:
+                                    type: string
+                                  email:
+                                    type: string
+                                    format: email
+                                  phone:
+                                    type: string
+                              shipping:
+                                type: object
+                                properties:
+                                  first_name:
+                                    type: string
+                                  last_name:
+                                    type: string
+                                  company:
+                                    type: string
+                                  address_1:
+                                    type: string
+                                  address_2:
+                                    type: string
+                                  city:
+                                    type: string
+                                  state:
+                                    type: string
+                                  postcode:
+                                    type: string
+                                  country:
+                                    type: string
+                                  email:
+                                    type: string
+                                    format: email
+                                  phone:
+                                    type: string
+                              payment_method:
+                                type: string
+                              payment_method_title:
+                                type: string
+                              transaction_id:
+                                type: string
+                              date_paid:
+                                type: string
+                                format: date-time
+                              date_paid_gmt:
+                                type: string
+                                format: date-time
+                              date_completed:
+                                type: string
+                                format: date-time
+                              date_completed_gmt:
+                                type: string
+                                format: date-time
+                              cart_hash:
+                                type: string
+                              meta_data:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: integer
+                                    key:
+                                      type: string
+                                    value:
+                                      type: string
+                              line_items:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: integer
+                                    name:
+                                      type: string
+                                    product_id:
+                                      type: integer
+                                    variation_id:
+                                      type: integer
+                                    quantity:
+                                      type: integer
+                                    tax_class:
+                                      type: string
+                                    subtotal:
+                                      type: string
+                                    subtotal_tax:
+                                      type: string
+                                    total:
+                                      type: string
+                                    total_tax:
+                                      type: string
+                                    sku:
+                                      type: string
+                                    price:
+                                      type: integer
+                                    meta_data:
+                                      type: array
+                                      items:
+                                        type: object
+                                        properties:
+                                          id:
+                                            type: integer
+                                          key:
+                                            type: string
+                                          value:
+                                            type: string
+                              tax_lines:
+                                type: array
+                                items: {}
+                              shipping_lines:
+                                type: array
+                                items: {}
+                              fee_lines:
+                                type: array
+                                items: {}
+                              coupon_lines:
+                                type: array
+                                items: {}
+                              refunds:
+                                type: array
+                                items: {}
+                              _links:
+                                type: object
+                                properties:
+                                  self:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        href:
+                                          type: string
+                                  collection:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        href:
+                                          type: string
+                                  customer:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        href:
+                                          type: string
+
+              responses:
+                '200':
+                  description: OK
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
