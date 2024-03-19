@@ -1,0 +1,246 @@
+openapi: 3.0.0
+info:
+  title: DPD Shipment API
+  description: API for creating shipments with DPD
+  version: 1.0.0
+servers:
+  - url: https://api.dpd.ro/v1
+paths:
+  /track:
+    post:
+      summary: Track Shipment
+      description: Track a shipment using DPD's Track and Trace service.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                  description: Your username for authentication
+                password:
+                  type: string
+                  description: Your password for authentication
+                parcels:
+                  type: array
+                  items:
+                    type: string
+                    description: Parcel reference for tracking
+                lastOperationOnly:
+                  type: boolean
+                  description: Flag to return only the last operation (optional)
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  parcels:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        parcelId:
+                          type: string
+                          description: ID of the parcel
+                        externalCarrierParcelNumbers:
+                          type: array
+                          items:
+                            type: string
+                          description: External carrier parcel numbers associated with the parcel
+                        operations:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              dateTime:
+                                type: string
+                                format: date-time
+                                description: Date and time of the operation
+                              operationCode:
+                                type: integer
+                                description: Code representing the operation
+                              place:
+                                type: string
+                                description: Place where the operation occurred
+                              description:
+                                type: string
+                                description: Description of the operation
+                              comment:
+                                type: string
+                                description: Additional comment related to the operation
+                              exceptionCodes:
+                                type: array
+                                items:
+                                  type: string
+                                description: Exception codes associated with the operation
+                              returnShipmentId:
+                                type: string
+                                description: ID of the return shipment (if applicable)
+                              redirectShipmentId:
+                                type: string
+                                description: ID of the redirected shipment (if applicable)
+                              consignee:
+                                type: string
+                                description: Consignee information
+                              podImageURL:
+                                type: string
+                                description: URL of the proof of delivery image
+                              additionalInfo:
+                                type: object
+                                properties:
+                                  officeURL:
+                                    type: string
+                                    description: URL of the office
+                                  geoPUDOId:
+                                    type: string
+                                    description: ID of the geo PUDO
+                                  predict:
+                                    type: object
+                                    properties:
+                                      predictedVisitDateTimeFrom:
+                                        type: string
+                                        format: date-time
+                                        description: Predicted visit date and time (from)
+                                      predictedVisitDateTimeTo:
+                                        type: string
+                                        format: date-time
+                                        description: Predicted visit date and time (to)
+                                      includedDelayInMinutes:
+                                        type: integer
+                                        description: Included delay in minutes
+                                      canceled:
+                                        type: boolean
+                                        description: Indicates if the prediction is canceled
+                        externalCarrierParcelNumbersDetails:
+                          type: object
+                          additionalProperties:
+                            type: object
+                            properties:
+                              externalCarrierId:
+                                type: integer
+                                description: ID of the external carrier
+                              externalCarrierName:
+                                type: string
+                                description: Name of the external carrier
+                              trackAndTraceUrl:
+                                type: string
+                                description: URL for track and trace
+
+
+  /shipment:
+    post:
+      summary: Create Shipment
+      description: Endpoint to create a shipment with DPD.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                  description: The username for authentication.
+                password:
+                  type: string
+                  description: The password for authentication.
+                service:
+                  type: object
+                  properties:
+                    pickupDate:
+                      type: string
+                      format: date
+                      description: The date when the pickup is scheduled.
+                    serviceId:
+                      type: integer
+                      description: The ID of the DPD service.
+                content:
+                  type: object
+                  properties:
+                    parcelsCount:
+                      type: integer
+                      description: The number of parcels in the shipment.
+                    totalWeight:
+                      type: number
+                      description: The total weight of the shipment.
+                    contents:
+                      type: string
+                      description: The description of the contents of the shipment.
+                    package:
+                      type: string
+                      description: The type of packaging used for the shipment.
+                payment:
+                  type: object
+                  properties:
+                    courierServicePayer:
+                      type: string
+                      description: Who pays for the courier service.
+                    declaredValuePayer:
+                      type: string
+                      description: Who pays for the declared value.
+                    packagePayer:
+                      type: string
+                      description: Who pays for the package.
+                    thirdPartyClientId:
+                      type: integer
+                      description: The ID of the third-party client.
+                    discountCardId:
+                      type: object
+                      properties:
+                        contractId:
+                          type: integer
+                          description: The ID of the discount card contract.
+                        cardId:
+                          type: integer
+                          description: The ID of the discount card.
+                recipient:
+                  type: object
+                  properties:
+                    phone1:
+                      type: object
+                      properties:
+                        number:
+                          type: string
+                          description: The phone number of the recipient.
+                    clientName:
+                      type: string
+                      description: The name of the client.
+                    objectName:
+                      type: string
+                      description: The name of the object.
+                    contactName:
+                      type: string
+                      description: The name of the contact person.
+                    email:
+                      type: string
+                      description: The email address of the recipient.
+                    privatePerson:
+                      type: boolean
+                      description: Indicates if the recipient is a private person.
+                    pickupOfficeId:
+                      type: integer
+                      description: The ID of the pickup office.
+                shipmentNote:
+                  type: string
+                  description: Additional notes for the shipment.
+                ref1:
+                  type: string
+                  description: Reference field 1 for the shipment.
+                ref2:
+                  type: string
+                  description: Reference field 2 for the shipment.
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
